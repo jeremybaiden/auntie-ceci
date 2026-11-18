@@ -1,6 +1,6 @@
 # Supabase setup
 
-Project: `my-sous` (Supabase project name; app is now Auntie Ceci) (ref `kgfijzevpcbcbdrcmszo`, Canada Central).
+Project: `auntie-ceci` (ref `kgfijzevpcbcbdrcmszo`, Canada Central).
 
 Tables (all with row-level security):
 
