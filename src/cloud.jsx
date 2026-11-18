@@ -26,7 +26,7 @@ export const SUPABASE_ANON_KEY =
 export const APPLE_SIGN_IN_ENABLED = false;
 
 const GUEST_FLAG = "auntiececi:guest";
-const APP_KEYS = ["sous_profile", "sous_kitchen", "sous_recipes", "sous_shopping"];
+const APP_KEYS = ["auntie_profile", "auntie_kitchen", "auntie_recipes", "auntie_shopping"];
 const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
 const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch { /* blocked */ } };
 const lsDel = (k) => { try { localStorage.removeItem(k); } catch { /* blocked */ } };
@@ -56,7 +56,7 @@ export function startingLanguage() {
   const picked = lsGet("auntiececi:lang");
   if (LANGS.includes(picked)) return picked;
   try {
-    const p = JSON.parse(lsGet("auntiececi:sous_profile") || "{}");
+    const p = JSON.parse(lsGet("auntiececi:auntie_profile") || "{}");
     const saved = p.language || (p.profile && p.profile.language);
     if (LANGS.includes(saved)) return saved;
   } catch { /* ignore */ }
@@ -309,6 +309,8 @@ export async function startCloud() {
     const cache = {};
     const { data: rows, error } = await sb.from("user_store").select("key,value");
     if (!error) for (const r of rows || []) cache[r.key] = JSON.stringify(r.value);
+    // Data saved under the old My Sous names (sous_*) is read as the new auntie_* keys.
+    for (const k of APP_KEYS) { const o = k.replace(/^auntie_/, "sous_"); if (cache[k] == null && cache[o] != null) cache[k] = cache[o]; }
     const toUpload = [];
     for (const k of APP_KEYS) {
       const local = lsGet("auntiececi:" + k);
@@ -330,7 +332,7 @@ export async function startCloud() {
             const value = JSON.parse(v);
             await sb.from("user_store").upsert({ user_id: myId, key: k, value });
             // The name in your profile is the name other cooks see on your Community posts.
-            const name = k === "sous_profile" && value && value.profile && String(value.profile.name || "").trim().slice(0, 60);
+            const name = k === "auntie_profile" && value && value.profile && String(value.profile.name || "").trim().slice(0, 60);
             if (name && name !== lastName) { lastName = name; await sb.from("profiles").update({ display_name: name }).eq("id", myId); }
           } catch { /* retried on next change */ }
         }, 600);

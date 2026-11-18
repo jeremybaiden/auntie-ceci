@@ -7244,10 +7244,10 @@ export default function App() {
         }
       };
       const [profileData, kitchenData, recipeData, shoppingData] = await Promise.all([
-        safeGet("sous_profile"),
-        safeGet("sous_kitchen"),
-        safeGet("sous_recipes"),
-        safeGet("sous_shopping"),
+        safeGet("auntie_profile"),
+        safeGet("auntie_kitchen"),
+        safeGet("auntie_recipes"),
+        safeGet("auntie_shopping"),
       ]);
       if (cancelled) return;
       if (profileData) {
@@ -7291,22 +7291,22 @@ export default function App() {
   // from overwriting a real saved session before it's even been read.
   useEffect(() => {
     if (!storageLoaded) return;
-    window.storage.set("sous_profile", JSON.stringify({ onboarded, profile, language })).catch(() => {});
+    window.storage.set("auntie_profile", JSON.stringify({ onboarded, profile, language })).catch(() => {});
   }, [storageLoaded, onboarded, profile, language]);
 
   useEffect(() => {
     if (!storageLoaded) return;
-    window.storage.set("sous_kitchen", JSON.stringify({ ingredients, equipment, equipmentList, basics })).catch(() => {});
+    window.storage.set("auntie_kitchen", JSON.stringify({ ingredients, equipment, equipmentList, basics })).catch(() => {});
   }, [storageLoaded, ingredients, equipment, equipmentList, basics]);
 
   useEffect(() => {
     if (!storageLoaded) return;
-    window.storage.set("sous_recipes", JSON.stringify({ userRecipes, favorites, history, selectedCategories, filterMatch })).catch(() => {});
+    window.storage.set("auntie_recipes", JSON.stringify({ userRecipes, favorites, history, selectedCategories, filterMatch })).catch(() => {});
   }, [storageLoaded, userRecipes, favorites, history, selectedCategories, filterMatch]);
 
   useEffect(() => {
     if (!storageLoaded) return;
-    window.storage.set("sous_shopping", JSON.stringify({ shoppingList, shopCountry, customStores })).catch(() => {});
+    window.storage.set("auntie_shopping", JSON.stringify({ shoppingList, shopCountry, customStores })).catch(() => {});
   }, [storageLoaded, shoppingList, shopCountry, customStores]);
 
 
