@@ -12,7 +12,7 @@ const S = (en, es, fr, pt, hi, zh, ar) => ({ en, es, fr, pt, hi, zh, ar });
 
 export const TOUR_UI = {
   label: S("App tour", "Recorrido por la app", "Visite de l'app", "Tour pelo app", "ऐप टूर", "应用导览", "جولة في التطبيق"),
-  sub: S("A hands-on, step-by-step walkthrough of My Sous", "Un recorrido práctico, paso a paso, por My Sous", "Une visite pratique, pas à pas, de My Sous", "Um passo a passo prático pelo My Sous", "My Sous का कदम-दर-कदम, करके सीखने वाला टूर", "边做边学，逐步了解 My Sous", "جولة عملية خطوة بخطوة في My Sous"),
+  sub: S("A hands-on, step-by-step walkthrough of Auntie Ceci", "Un recorrido práctico, paso a paso, por Auntie Ceci", "Une visite pratique, pas à pas, de Auntie Ceci", "Um passo a passo prático pela Auntie Ceci", "Auntie Ceci का कदम-दर-कदम, करके सीखने वाला टूर", "边做边学，逐步了解 Auntie Ceci", "جولة عملية خطوة بخطوة في Auntie Ceci"),
   step: S("Step {n} of {total}", "Paso {n} de {total}", "Étape {n} sur {total}", "Passo {n} de {total}", "चरण {n} / {total}", "第 {n} 步，共 {total} 步", "الخطوة {n} من {total}"),
   next: S("Next", "Siguiente", "Suivant", "Próximo", "आगे", "下一步", "التالي"),
   back: S("Back", "Atrás", "Retour", "Voltar", "पीछे", "上一步", "رجوع"),
@@ -30,7 +30,7 @@ export const TOUR_UI = {
 export const TOUR_STEPS = [
   {
     id: "welcome", screen: "home", emoji: "👋",
-    title: S("Welcome to My Sous", "Bienvenido a My Sous", "Bienvenue sur My Sous", "Bem-vindo ao My Sous", "My Sous में आपका स्वागत है", "欢迎使用 My Sous", "مرحبًا بك في My Sous"),
+    title: S("Welcome to Auntie Ceci", "Bienvenido a Auntie Ceci", "Bienvenue sur Auntie Ceci", "Bem-vindo à Auntie Ceci", "Auntie Ceci में आपका स्वागत है", "欢迎使用 Auntie Ceci", "مرحبًا بك في Auntie Ceci"),
     body: S(
       "Let's cook your first meal together. You'll add what's in your kitchen, find a recipe and start cooking it, trying each part as you go. It takes about two minutes.",
       "Vamos a preparar tu primera comida juntos. Añadirás lo que hay en tu cocina, buscarás una receta y empezarás a cocinarla, probando cada parte. Tarda unos dos minutos.",
@@ -56,13 +56,13 @@ export const TOUR_STEPS = [
     id: "tools", screen: "kitchen", emoji: "🍳", task: "tool", target: '[data-tour="tools"]',
     title: S("Pick your kitchen tools", "Elige tus utensilios", "Choisissez vos ustensiles", "Escolha seus utensílios", "अपने बर्तन चुनें", "选择你的厨具", "اختر أدوات مطبخك"),
     body: S(
-      "Tap a tool to turn it on or off, like Oven or Air fryer. My Sous only suggests recipes you can make with the tools you have.",
-      "Toca un utensilio para activarlo o desactivarlo, como Horno o Freidora de aire. My Sous solo sugiere recetas que puedes hacer con lo que tienes.",
-      "Touchez un ustensile pour l'activer ou le désactiver, comme Four ou Friteuse à air. My Sous ne propose que des recettes faisables avec vos ustensiles.",
-      "Toque num utensílio para ligar ou desligar, como Forno ou Air fryer. O My Sous só sugere receitas que dá para fazer com o que você tem.",
-      "किसी बर्तन को चालू या बंद करने के लिए उस पर टैप करें, जैसे ओवन या एयर फ्रायर। My Sous सिर्फ़ वही रेसिपी सुझाता है जो आपके बर्तनों से बन सकें।",
-      "点一下厨具即可开启或关闭，比如烤箱或空气炸锅。My Sous 只会推荐用你现有厨具能做的菜。",
-      "اضغط على أداة لتفعيلها أو إيقافها، مثل الفرن أو القلاية الهوائية. يقترح My Sous فقط الوصفات التي يمكنك تحضيرها بأدواتك."),
+      "Tap a tool to turn it on or off, like Oven or Air fryer. Auntie Ceci only suggests recipes you can make with the tools you have.",
+      "Toca un utensilio para activarlo o desactivarlo, como Horno o Freidora de aire. Auntie Ceci solo sugiere recetas que puedes hacer con lo que tienes.",
+      "Touchez un ustensile pour l'activer ou le désactiver, comme Four ou Friteuse à air. Auntie Ceci ne propose que des recettes faisables avec vos ustensiles.",
+      "Toque num utensílio para ligar ou desligar, como Forno ou Air fryer. A Auntie Ceci só sugere receitas que dá para fazer com o que você tem.",
+      "किसी बर्तन को चालू या बंद करने के लिए उस पर टैप करें, जैसे ओवन या एयर फ्रायर। Auntie Ceci सिर्फ़ वही रेसिपी सुझाता है जो आपके बर्तनों से बन सकें।",
+      "点一下厨具即可开启或关闭，比如烤箱或空气炸锅。Auntie Ceci 只会推荐用你现有厨具能做的菜。",
+      "اضغط على أداة لتفعيلها أو إيقافها، مثل الفرن أو القلاية الهوائية. يقترح Auntie Ceci فقط الوصفات التي يمكنك تحضيرها بأدواتك."),
   },
   {
     id: "go-cook", emoji: "👇", task: "screen:cook", target: '[data-tour="tab-cook"]',

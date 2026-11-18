@@ -1,4 +1,4 @@
-# My Sous
+# Auntie Ceci
 
 An AI-powered cooking companion for students and complete beginners. Tell it what's in your kitchen and it shows meals you can make, then walks you through each one step by step.
 
@@ -45,4 +45,4 @@ docs/index.html      single-file build for GitHub Pages
 
 ## Copyright
 
-© 2026 Jeremy Baiden. All rights reserved. My Sous (its name, logo, design, recipes, content and code) may not be copied, reused or redistributed without written permission. See [LICENSE](LICENSE).
+© 2026 Jeremy Baiden. All rights reserved. Auntie Ceci (its name, logo, design, recipes, content and code) may not be copied, reused or redistributed without written permission. See [LICENSE](LICENSE).

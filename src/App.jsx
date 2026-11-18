@@ -99,23 +99,23 @@ html[data-ms-motion="reduce"] .ms-tour-target { animation: none; box-shadow: 0 0
   .ms-desktop .ms-tabbar { padding: 8px 6px max(12px, env(safe-area-inset-bottom)) !important; }
 }
 @media (max-width: 820px) { .ms-desktop .ms-nav { order: 3; width: 100%; overflow-x: auto; margin-inline-end: 0 !important; } }
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Lobster&family=Inter:wght@400;500;600;700&display=swap');
 @keyframes sousTypingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }`;
 
-// Palette: warm cream + sage green + terracotta.
+// Palette (Auntie Ceci): warm cream + cocoa brown + kente gold.
 // Fills use the palette exactly; *Text variants are deeper shades of the same
 // hue so small text stays readable (4.5:1) on cream and light tints.
 const COLORS = {
   paper: "var(--ms-paper)",               // cream: app background
   card: "var(--ms-card)",
-  ink: "var(--ms-ink)",                   // charcoal: text
+  ink: "var(--ms-ink)",                   // deep cocoa: text
   inkMuted: "var(--ms-ink-muted)",
   line: "var(--ms-line)",
-  primary: "var(--ms-primary)",           // forest sage: buttons and navigation
+  primary: "var(--ms-primary)",           // cocoa brown: buttons and navigation
   primaryText: "var(--ms-primary-text)",
-  sage: "var(--ms-sage)",                 // sage: secondary sections
+  sage: "var(--ms-sage)",                 // sand: secondary sections
   sageSofter: "var(--ms-sage-softer)",
-  accent: "var(--ms-accent)",             // terracotta: accents and highlights
+  accent: "var(--ms-accent)",             // kente gold: accents and highlights
   accentText: "var(--ms-accent-text)",
   accentSoft: "var(--ms-accent-soft)",
   accentSofter: "var(--ms-accent-softer)",
@@ -257,7 +257,7 @@ const TRANSLATIONS = {
   home: { en: "Home", es: "Inicio", fr: "Accueil", pt: "Início", hi: "होम", zh: "首页", ar: "الرئيسية", ru: "Главная", ta: "முகப்பு" },
   kitchen: { en: "Kitchen", es: "Cocina", fr: "Cuisine", pt: "Cozinha", hi: "रसोई", zh: "厨房", ar: "المطبخ", ru: "Кухня", ta: "சமையலறை" },
   cook: { en: "Cook", es: "Cocinar", fr: "Cuisiner", pt: "Cozinhar", hi: "पकाएं", zh: "烹饪", ar: "طبخ", ru: "Готовить", ta: "சமை" },
-  sousChef: { en: "Sous-Chef", es: "Sous-Chef", fr: "Sous-Chef", pt: "Sous-Chef", hi: "सू-शेफ", zh: "副厨师", ar: "مساعد الطاهي", ru: "Су-шеф", ta: "உதவி சமையல்காரர்" },
+  sousChef: { en: "Auntie Ceci", es: "Auntie Ceci", fr: "Auntie Ceci", pt: "Auntie Ceci", hi: "Auntie Ceci", zh: "Auntie Ceci", ar: "Auntie Ceci", ru: "Auntie Ceci", ta: "Auntie Ceci" },
   more: { en: "More", es: "Más", fr: "Plus", pt: "Mais", hi: "अधिक", zh: "更多", ar: "المزيد", ru: "Ещё", ta: "மேலும்" },
 
   homeGreetingFallback: { en: "Welcome back", es: "Bienvenido de nuevo", fr: "Content de vous revoir", pt: "Bem-vindo de volta", hi: "वापसी पर स्वागत है", zh: "欢迎回来", ar: "مرحبًا بعودتك" },
@@ -265,7 +265,7 @@ const TRANSLATIONS = {
   ingredientsLabel: { en: "ingredients", es: "ingredientes", fr: "ingrédients", pt: "ingredientes", hi: "सामग्री", zh: "食材", ar: "مكونات" },
   toolsReady: { en: "tools ready", es: "herramientas listas", fr: "outils prêts", pt: "ferramentas prontas", hi: "उपकरण तैयार", zh: "已备好的工具", ar: "أدوات جاهزة" },
   readyToCookLabel: { en: "ready to cook", es: "listo para cocinar", fr: "prêt à cuisiner", pt: "pronto para cozinhar", hi: "पकाने के लिए तैयार", zh: "可以烹饪", ar: "جاهز للطبخ" },
-  askSousChef: { en: "Ask the Sous-Chef", es: "Pregúntale al Sous-Chef", fr: "Demander au Sous-Chef", pt: "Pergunte ao Sous-Chef", hi: "सू-शेफ से पूछें", zh: "询问副厨师", ar: "اسأل مساعد الطاهي" },
+  askSousChef: { en: "Ask Auntie Ceci", es: "Pregúntale a Auntie Ceci", fr: "Demander à Auntie Ceci", pt: "Pergunte à Auntie Ceci", hi: "Auntie Ceci से पूछें", zh: "问问 Auntie Ceci", ar: "اسأل Auntie Ceci" },
   beginnerTipLabel: { en: "Beginner tip", es: "Consejo para principiantes", fr: "Astuce débutant", pt: "Dica para iniciantes", hi: "शुरुआती सलाह", zh: "新手小贴士", ar: "نصيحة للمبتدئين" },
   recommendedForYou: { en: "Recommended for you", es: "Recomendado para ti", fr: "Recommandé pour vous", pt: "Recomendado para você", hi: "आपके लिए अनुशंसित", zh: "为你推荐", ar: "موصى به لك" },
   recentlyCooked: { en: "Recently cooked", es: "Cocinado recientemente", fr: "Cuisiné récemment", pt: "Cozinhado recentemente", hi: "हाल ही में बनाया गया", zh: "最近做过的菜", ar: "طُبخ مؤخرًا" },
@@ -319,7 +319,7 @@ const TRANSLATIONS = {
   privacyLabel: { en: "Privacy", es: "Privacidad", fr: "Confidentialité", pt: "Privacidade", hi: "गोपनीयता", zh: "隐私", ar: "الخصوصية" },
   privacyPoint1: { en: "Your kitchen, cookbook, history, shopping list and body details are private. Only you can see them.", es: "Tu cocina, recetario, historial, lista de compras y datos corporales son privados. Solo tú puedes verlos.", fr: "Votre cuisine, vos recettes, votre historique, votre liste de courses et vos mensurations sont privés. Vous seul pouvez les voir.", pt: "Sua cozinha, receitas, histórico, lista de compras e dados do corpo são privados. Só você pode vê-los.", hi: "आपकी रसोई, कुकबुक, इतिहास, शॉपिंग लिस्ट और शरीर की जानकारी निजी है। इन्हें सिर्फ़ आप देख सकते हैं।", zh: "你的厨房、食谱本、历史记录、购物清单和身体数据都是私密的，只有你能看到。", ar: "مطبخك ووصفاتك وسجلك وقائمة مشترياتك وبيانات جسمك خاصة. أنت فقط من يمكنه رؤيتها." },
   privacyPoint2: { en: "What you post in the Community (tips, ratings, videos, shared recipes) is public, with your display name. Your email is never shown.", es: "Lo que publicas en la Comunidad (consejos, calificaciones, videos, recetas) es público, con tu nombre. Tu correo nunca se muestra.", fr: "Ce que vous publiez dans la Communauté (astuces, notes, vidéos, recettes) est public, avec votre nom. Votre e-mail n'est jamais affiché.", pt: "O que você publica na Comunidade (dicas, avaliações, vídeos, receitas) é público, com seu nome. Seu e-mail nunca aparece.", hi: "कम्युनिटी में आप जो पोस्ट करते हैं (टिप्स, रेटिंग, वीडियो, रेसिपी) वह आपके नाम के साथ सार्वजनिक होता है। आपका ईमेल कभी नहीं दिखता।", zh: "你在社区发布的内容（技巧、评分、视频、食谱）会以你的显示名公开，邮箱永远不会显示。", ar: "ما تنشره في المجتمع (نصائح وتقييمات وفيديوهات ووصفات) يكون علنيًا باسمك الظاهر. لا يظهر بريدك أبدًا." },
-  privacyPoint3: { en: "My Sous doesn't sell your data or show ads. It's only used to run the app.", es: "My Sous no vende tus datos ni muestra anuncios. Solo se usan para que la app funcione.", fr: "My Sous ne vend pas vos données et n'affiche pas de publicités. Elles servent uniquement au fonctionnement de l'app.", pt: "O My Sous não vende seus dados nem mostra anúncios. Eles só servem para o app funcionar.", hi: "My Sous आपका डेटा नहीं बेचता और विज्ञापन नहीं दिखाता। इसका इस्तेमाल सिर्फ़ ऐप चलाने के लिए होता है।", zh: "My Sous 不出售你的数据，也不展示广告，数据只用于运行应用。", ar: "لا يبيع My Sous بياناتك ولا يعرض إعلانات. تُستخدم فقط لتشغيل التطبيق." },
+  privacyPoint3: { en: "Auntie Ceci doesn't sell your data or show ads. It's only used to run the app.", es: "Auntie Ceci no vende tus datos ni muestra anuncios. Solo se usan para que la app funcione.", fr: "Auntie Ceci ne vend pas vos données et n'affiche pas de publicités. Elles servent uniquement au fonctionnement de l'app.", pt: "A Auntie Ceci não vende seus dados nem mostra anúncios. Eles só servem para o app funcionar.", hi: "Auntie Ceci आपका डेटा नहीं बेचता और विज्ञापन नहीं दिखाता। इसका इस्तेमाल सिर्फ़ ऐप चलाने के लिए होता है।", zh: "Auntie Ceci 不出售你的数据，也不展示广告，数据只用于运行应用。", ar: "لا يبيع Auntie Ceci بياناتك ولا يعرض إعلانات. تُستخدم فقط لتشغيل التطبيق." },
   privacyPoint4Account: { en: "Your data is stored securely with Supabase in Canada. You can delete your account and everything in it at any time.", es: "Tus datos se guardan de forma segura con Supabase en Canadá. Puedes eliminar tu cuenta y todo su contenido cuando quieras.", fr: "Vos données sont stockées en sécurité chez Supabase, au Canada. Vous pouvez supprimer votre compte et tout son contenu à tout moment.", pt: "Seus dados ficam guardados com segurança no Supabase, no Canadá. Você pode excluir sua conta e tudo nela quando quiser.", hi: "आपका डेटा कनाडा में Supabase के साथ सुरक्षित रखा जाता है। आप कभी भी अपना खाता और उसका सारा डेटा हटा सकते हैं।", zh: "你的数据安全存储在加拿大的 Supabase 上，你可以随时删除账户及其中的所有内容。", ar: "تُخزَّن بياناتك بأمان لدى Supabase في كندا. يمكنك حذف حسابك وكل ما فيه في أي وقت." },
   privacyPoint4Guest: { en: "As a guest, your data stays in this browser. Clearing your browser data removes it.", es: "Como invitado, tus datos se quedan en este navegador. Si borras los datos del navegador, se eliminan.", fr: "En invité, vos données restent dans ce navigateur. Effacer les données du navigateur les supprime.", pt: "Como convidado, seus dados ficam neste navegador. Limpar os dados do navegador os apaga.", hi: "मेहमान के रूप में आपका डेटा इसी ब्राउज़र में रहता है। ब्राउज़र डेटा साफ़ करने पर यह हट जाता है।", zh: "访客模式下，数据保存在本浏览器中，清除浏览器数据即会删除。", ar: "كضيف، تبقى بياناتك في هذا المتصفح. مسح بيانات المتصفح يحذفها." },
   deleteAccountLabel: { en: "Delete my account", es: "Eliminar mi cuenta", fr: "Supprimer mon compte", pt: "Excluir minha conta", hi: "मेरा खाता हटाएं", zh: "删除我的账户", ar: "حذف حسابي" },
@@ -446,9 +446,9 @@ const TRANSLATIONS = {
   fb_recipe: { en: "Recipe request", es: "Pedir una receta", fr: "Demande de recette", pt: "Pedido de receita", hi: "रेसिपी की मांग", zh: "想要的食谱", ar: "طلب وصفة" },
   fb_praise: { en: "I love it", es: "Me encanta", fr: "J'adore", pt: "Adorei", hi: "बहुत पसंद आया", zh: "很喜欢", ar: "أحببته" },
   fb_other: { en: "Other", es: "Otro", fr: "Autre", pt: "Outro", hi: "अन्य", zh: "其他", ar: "أخرى" },
-  fbRatingLabel: { en: "How's My Sous so far?", es: "¿Qué tal My Sous hasta ahora?", fr: "Comment trouvez-vous My Sous ?", pt: "O que está achando do My Sous?", hi: "अब तक My Sous कैसा लगा?", zh: "目前觉得 My Sous 怎么样？", ar: "ما رأيك في My Sous حتى الآن؟" },
+  fbRatingLabel: { en: "How's Auntie Ceci so far?", es: "¿Qué tal Auntie Ceci hasta ahora?", fr: "Comment trouvez-vous Auntie Ceci ?", pt: "O que está achando da Auntie Ceci?", hi: "अब तक Auntie Ceci कैसा लगा?", zh: "目前觉得 Auntie Ceci 怎么样？", ar: "ما رأيك في Auntie Ceci حتى الآن؟" },
   fbMessageLabel: { en: "Your message", es: "Tu mensaje", fr: "Votre message", pt: "Sua mensagem", hi: "आपका संदेश", zh: "你的留言", ar: "رسالتك" },
-  fbPlaceholder_idea: { en: "What would make My Sous better for you?", es: "¿Qué haría My Sous mejor para ti?", fr: "Qu'est-ce qui rendrait My Sous meilleur pour vous ?", pt: "O que deixaria o My Sous melhor para você?", hi: "My Sous को आपके लिए बेहतर क्या बनाएगा?", zh: "怎样能让 My Sous 更好用？", ar: "ما الذي يجعل My Sous أفضل لك؟" },
+  fbPlaceholder_idea: { en: "What would make Auntie Ceci better for you?", es: "¿Qué haría Auntie Ceci mejor para ti?", fr: "Qu'est-ce qui rendrait Auntie Ceci meilleure pour vous ?", pt: "O que deixaria a Auntie Ceci melhor para você?", hi: "Auntie Ceci को आपके लिए बेहतर क्या बनाएगा?", zh: "怎样能让 Auntie Ceci 更好用？", ar: "ما الذي يجعل Auntie Ceci أفضل لك؟" },
   fbPlaceholder_bug: { en: "What happened, and what were you doing just before?", es: "¿Qué pasó y qué hacías justo antes?", fr: "Que s'est-il passé, et que faisiez-vous juste avant ?", pt: "O que aconteceu e o que você fazia logo antes?", hi: "क्या हुआ, और उससे ठीक पहले आप क्या कर रहे थे?", zh: "发生了什么？之前你在做什么？", ar: "ماذا حدث، وماذا كنت تفعل قبله مباشرة؟" },
   fbPlaceholder_recipe: { en: "Which dish would you like to learn to make?", es: "¿Qué plato te gustaría aprender a hacer?", fr: "Quel plat aimeriez-vous apprendre à faire ?", pt: "Que prato você gostaria de aprender a fazer?", hi: "आप कौन-सी डिश बनाना सीखना चाहेंगे?", zh: "你想学做哪道菜？", ar: "ما الطبق الذي تود تعلّم تحضيره؟" },
   fbPlaceholder_praise: { en: "What do you like most?", es: "¿Qué es lo que más te gusta?", fr: "Qu'est-ce que vous aimez le plus ?", pt: "Do que você mais gosta?", hi: "आपको सबसे ज़्यादा क्या पसंद है?", zh: "你最喜欢哪一点？", ar: "ما أكثر ما يعجبك؟" },
@@ -535,7 +535,7 @@ const TRANSLATIONS = {
   previousStepLabel: { en: "Previous", es: "Anterior", fr: "Précédent", pt: "Anterior", hi: "पिछला", zh: "上一步", ar: "السابق" },
   finishCookingLabel: { en: "Finish cooking", es: "Terminar de cocinar", fr: "Terminer la cuisson", pt: "Terminar de cozinhar", hi: "खाना पकाना पूरा करें", zh: "完成烹饪", ar: "إنهاء الطبخ", ru: "Завершить готовку", ta: "சமையல் முடி" },
 
-  aiTitle: { en: "AI Sous-Chef", es: "IA Sous-Chef", fr: "IA Sous-Chef", pt: "IA Sous-Chef", hi: "एआई सू-शेफ", zh: "AI 副厨师", ar: "مساعد الطاهي الذكي", ru: "ИИ Су-шеф", ta: "AI உதவி சமையல்காரர்" },
+  aiTitle: { en: "Ask Auntie Ceci", es: "Pregúntale a Auntie Ceci", fr: "Demander à Auntie Ceci", pt: "Pergunte à Auntie Ceci", hi: "Auntie Ceci से पूछें", zh: "问问 Auntie Ceci", ar: "اسأل Auntie Ceci", ru: "Спросите Auntie Ceci", ta: "Auntie Ceci-யிடம் கேளுங்கள்" },
   aiSubtitle: { en: "Ask about substitutions, timing, or technique", es: "Pregunta sobre sustituciones, tiempos o técnicas", fr: "Posez des questions sur les substitutions, le minutage ou la technique", pt: "Pergunte sobre substituições, tempo ou técnica", hi: "विकल्प, समय या तकनीक के बारे में पूछें", zh: "询问替代食材、时间或技巧", ar: "اسأل عن البدائل أو الوقت أو التقنية", ru: "Спросите о заменах, времени или технике", ta: "மாற்று பொருட்கள், நேரம் அல்லது முறை பற்றி கேளுங்கள்" },
 
   historyTitle: { en: "History", es: "Historial", fr: "Historique", pt: "Histórico", hi: "इतिहास", zh: "历史记录", ar: "السجل", ru: "История", ta: "வரலாறு" },
@@ -602,7 +602,7 @@ const TRANSLATIONS = {
   macroHint: { en: "Moving one adjusts the other two so they always add up to 100%.", es: "Mover uno ajusta los otros dos para que siempre sumen 100%.", fr: "Déplacer l'un ajuste les deux autres pour toujours totaliser 100%.", pt: "Mover um ajusta os outros dois para sempre somar 100%.", hi: "एक को हिलाने से बाकी दो समायोजित होते हैं ताकि कुल हमेशा 100% रहे।", zh: "移动其中一个会自动调整另外两个，使总和始终为100%。", ar: "تحريك واحد يعدّل الاثنين الآخرين تلقائيًا ليبقى المجموع دائمًا 100%." },
   createRecipeTitle: { en: "Create a Recipe", es: "Crear una Receta", fr: "Créer une Recette", pt: "Criar uma Receita", hi: "एक रेसिपी बनाएं", zh: "创建菜谱", ar: "إنشاء وصفة" },
   editRecipeTitle: { en: "Edit Recipe", es: "Editar Receta", fr: "Modifier la Recette", pt: "Editar Receita", hi: "रेसिपी संपादित करें", zh: "编辑菜谱", ar: "تعديل الوصفة" },
-  remixNoticeText: { en: "This is a My Sous recipe — saving will keep the original untouched and create your own personal twist instead.", es: "Esta es una receta de My Sous — al guardar, el original se mantiene intacto y se crea tu propia versión personal.", fr: "Ceci est une recette My Sous — l'enregistrement laissera l'original intact et créera votre propre version personnelle.", pt: "Esta é uma receita do My Sous — salvar manterá o original intacto e criará sua própria versão pessoal.", hi: "यह एक My Sous रेसिपी है — सहेजने से मूल अपरिवर्तित रहेगा और आपकी अपनी व्यक्तिगत रेसिपी बनेगी।", zh: "这是一道 My Sous 菜谱——保存后原版将保持不变，会为你创建专属的个人版本。", ar: "هذه وصفة من My Sous — الحفظ سيُبقي النسخة الأصلية كما هي وينشئ نسختك الشخصية الخاصة بدلاً من ذلك." },
+  remixNoticeText: { en: "This is an Auntie Ceci recipe — saving will keep the original untouched and create your own personal twist instead.", es: "Esta es una receta de Auntie Ceci — al guardar, el original se mantiene intacto y se crea tu propia versión personal.", fr: "Ceci est une recette Auntie Ceci — l'enregistrement laissera l'original intact et créera votre propre version personnelle.", pt: "Esta é uma receita da Auntie Ceci — salvar manterá o original intacto e criará sua própria versão pessoal.", hi: "यह एक Auntie Ceci रेसिपी है — सहेजने से मूल अपरिवर्तित रहेगा और आपकी अपनी व्यक्तिगत रेसिपी बनेगी।", zh: "这是一道 Auntie Ceci 菜谱——保存后原版将保持不变，会为你创建专属的个人版本。", ar: "هذه وصفة من Auntie Ceci — الحفظ سيُبقي النسخة الأصلية كما هي وينشئ نسختك الشخصية الخاصة بدلاً من ذلك." },
   brandLabel: { en: "Brand", es: "Marca", fr: "Marque", pt: "Marca", hi: "ब्रांड", zh: "品牌", ar: "العلامة التجارية" },
   brandPlaceholder: { en: "like Heinz", es: "ej. Heinz", fr: "ex. Heinz", pt: "ex. Heinz", hi: "जैसे Heinz", zh: "例如 亨氏", ar: "مثال: هاينز" },
   recipeNameLabel: { en: "Recipe name", es: "Nombre de la receta", fr: "Nom de la recette", pt: "Nome da receita", hi: "रेसिपी का नाम", zh: "菜谱名称", ar: "اسم الوصفة" },
@@ -661,8 +661,8 @@ const TRANSLATIONS = {
   secondhandLabel: { en: "♻️ Secondhand/thrift", es: "♻️ Segunda mano", fr: "♻️ Occasion", pt: "♻️ Usado/brechó", hi: "♻️ सेकंडहैंड", zh: "♻️ 二手商店", ar: "♻️ مستعمل" },
   noMissingIngredientsText: { en: "Nothing missing right now — check back once you're closer to a new recipe.", es: "No falta nada por ahora — vuelve cuando estés más cerca de una nueva receta.", fr: "Rien ne manque pour le moment — revenez quand vous serez plus proche d'une nouvelle recette.", pt: "Nada faltando agora — volte quando estiver mais perto de uma nova receita.", hi: "अभी कुछ भी गायब नहीं है — किसी नई रेसिपी के करीब होने पर वापस देखें।", zh: "目前没有缺少的东西——等你更接近解锁新菜谱时再来看看。", ar: "لا شيء ناقص الآن — عد عندما تقترب من وصفة جديدة." },
   glossaryEmpty: { en: "No ingredients match that search.", es: "Ningún ingrediente coincide con esa búsqueda.", fr: "Aucun ingrédient ne correspond à cette recherche.", pt: "Nenhum ingrediente corresponde a essa busca.", hi: "उस खोज से कोई सामग्री मेल नहीं खाती।", zh: "没有符合该搜索的食材。", ar: "لا توجد مكونات تطابق هذا البحث." },
-  aiGreeting: { en: "Hey! I'm your Sous-Chef. Ask me anything about a recipe, a substitution, or a technique.", es: "¡Hola! Soy tu Sous-Chef. Pregúntame lo que quieras sobre una receta, un sustituto o una técnica.", fr: "Salut ! Je suis votre Sous-Chef. Demandez-moi tout sur une recette, un remplacement ou une technique.", pt: "Oi! Sou seu Sous-Chef. Pergunte qualquer coisa sobre uma receita, uma substituição ou uma técnica.", hi: "नमस्ते! मैं आपका सू-शेफ हूँ। रेसिपी, विकल्प, या तकनीक के बारे में कुछ भी पूछें।", zh: "嗨！我是你的副厨师。随时问我关于食谱、替代品或技巧的任何问题。", ar: "مرحبًا! أنا مساعد الطاهي الخاص بك. اسألني أي شيء عن وصفة أو بديل أو تقنية." },
-  askSousChefPlaceholder: { en: "Ask the Sous-Chef…", es: "Pregúntale al Sous-Chef…", fr: "Demandez au Sous-Chef…", pt: "Pergunte ao Sous-Chef…", hi: "सू-शेफ से पूछें…", zh: "问问副厨师…", ar: "اسأل مساعد الطاهي…" },
+  aiGreeting: { en: "Hey, sweetheart! I'm Auntie Ceci. Ask me anything about a recipe, a substitution, or a technique.", es: "¡Hola, cariño! Soy Auntie Ceci. Pregúntame lo que quieras sobre una receta, un sustituto o una técnica.", fr: "Coucou ! Je suis Auntie Ceci. Demandez-moi tout sur une recette, un remplacement ou une technique.", pt: "Oi, querido! Sou a Auntie Ceci. Pergunte qualquer coisa sobre uma receita, uma substituição ou uma técnica.", hi: "नमस्ते! मैं Auntie Ceci हूँ। रेसिपी, विकल्प, या तकनीक के बारे में कुछ भी पूछें।", zh: "嗨！我是 Auntie Ceci。随时问我关于食谱、替代品或技巧的任何问题。", ar: "مرحبًا! أنا Auntie Ceci. اسألني أي شيء عن وصفة أو بديل أو تقنية." },
+  askSousChefPlaceholder: { en: "Ask Auntie Ceci…", es: "Pregúntale a Auntie Ceci…", fr: "Demandez à Auntie Ceci…", pt: "Pergunte à Auntie Ceci…", hi: "Auntie Ceci से पूछें…", zh: "问问 Auntie Ceci…", ar: "اسأل Auntie Ceci…" },
   settingsSub: { en: "Profile, daily goals, diet and display", es: "Perfil, objetivos, preferencia alimentaria", fr: "Profil, objectifs, préférence alimentaire", pt: "Perfil, metas, preferência alimentar", hi: "प्रोफ़ाइल, लक्ष्य, आहार वरीयता", zh: "个人资料、目标、饮食偏好", ar: "الملف الشخصي، الأهداف، التفضيلات الغذائية" },
 
   cookbookHeaderSub: { en: "Recipes you've saved to make again", es: "Recetas que guardaste para hacer de nuevo", fr: "Recettes que vous avez enregistrées pour refaire", pt: "Receitas que você salvou para fazer de novo", hi: "आपकी सहेजी गई रेसिपी जिन्हें आप फिर बनाएंगे", zh: "你保存下来准备再次制作的菜谱", ar: "الوصفات التي حفظتها لصنعها مرة أخرى" },
@@ -7488,7 +7488,7 @@ export default function App() {
       // Editing a recipe the user already created themselves — update it in place.
       setUserRecipes((prev) => prev.map((r) => (r.id === editingRecipe.id ? { ...data, id: editingRecipe.id, isUserRecipe: true } : r)));
     } else if (editingRecipe) {
-      // Editing a built-in My Sous recipe — never mutate the original, save a personal twist instead.
+      // Editing a built-in Auntie Ceci recipe — never mutate the original, save a personal twist instead.
       const newId = `remix-${editingRecipe.id}-${Date.now()}`;
       setUserRecipes((prev) => [...prev, { ...data, id: newId, isUserRecipe: true, remixOf: editingRecipe.id, remixOfName: editingRecipe.name }]);
     } else {
@@ -7618,12 +7618,12 @@ export default function App() {
         <style>{FONT_IMPORT}</style>
         <div style={frameStyle} className="ms-frame">
           <div className="ms-header" style={styles.statusRow}>
-            <img src={LOGO_HEADER} alt="My Sous logo" width={52} height={52} style={styles.brandLogo} /><span style={styles.brand}>My&nbsp;Sous</span>
+            <img src={LOGO_HEADER} alt="Auntie Ceci logo" width={52} height={52} style={styles.brandLogo} /><span style={styles.brand}>Auntie&nbsp;Ceci</span>
             <span style={{ flex: 1 }} />
           </div>
           <div style={{ ...styles.screenArea, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
-              <img src={LOGO_256} alt="My Sous" width={96} height={96} style={{ borderRadius: 22 }} />
+              <img src={LOGO_256} alt="Auntie Ceci" width={96} height={96} style={{ borderRadius: 22 }} />
               <span style={{ color: COLORS.inkMuted, fontSize: 13 }}>{t("loadingKitchen")}</span>
             </div>
           </div>
@@ -7640,7 +7640,7 @@ export default function App() {
         <style>{FONT_IMPORT}</style>
         <div style={frameStyle} className="ms-frame">
           <div className="ms-header" style={styles.statusRow}>
-            <img src={LOGO_HEADER} alt="My Sous logo" width={52} height={52} style={styles.brandLogo} /><span style={styles.brand}>My&nbsp;Sous</span>
+            <img src={LOGO_HEADER} alt="Auntie Ceci logo" width={52} height={52} style={styles.brandLogo} /><span style={styles.brand}>Auntie&nbsp;Ceci</span>
             <span style={{ flex: 1 }} />
           </div>
           <div style={styles.screenArea}>
@@ -7670,7 +7670,7 @@ export default function App() {
       <a href="#ms-main" className="ms-skip" onClick={(e) => { e.preventDefault(); const m = document.getElementById("ms-main"); if (m) { m.setAttribute("tabindex", "-1"); m.focus(); } }}>{t("skipToContent")}</a>
       <div style={frameStyle} className="ms-frame">
         <div className="ms-header" style={styles.statusRow}>
-          <img src={LOGO_HEADER} alt="My Sous logo" width={52} height={52} style={styles.brandLogo} /><span style={styles.brand}>My&nbsp;Sous</span>
+          <img src={LOGO_HEADER} alt="Auntie Ceci logo" width={52} height={52} style={styles.brandLogo} /><span style={styles.brand}>Auntie&nbsp;Ceci</span>
           <span style={{ flex: 1 }} />
           <button onClick={() => updateAppearance({ theme: isDark ? "light" : "dark" })} aria-label={t(isDark ? "themeLight" : "themeDark")} title={t(isDark ? "themeLight" : "themeDark")} style={styles.settingsButton}>
             {isDark ? <Sun size={17} color={COLORS.inkMuted} /> : <Moon size={17} color={COLORS.inkMuted} />}
@@ -8173,7 +8173,7 @@ function FeedbackScreen({ onBack }) {
     if (details) {
       lines.push("", "—", `Language: ${language}`, `Screen: ${window.innerWidth}×${window.innerHeight}`, `Browser: ${navigator.userAgent}`, `Page: ${window.location.origin}${window.location.pathname}`);
     }
-    const subject = `My Sous feedback: ${kindLabel(kind)}${rating ? ` (${rating}/5)` : ""}`;
+    const subject = `Auntie Ceci feedback: ${kindLabel(kind)}${rating ? ` (${rating}/5)` : ""}`;
     return `mailto:${FEEDBACK_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n").trim())}`;
   }
   // A real mailto: link (so it works with any email app); empty messages are stopped first.
@@ -10556,8 +10556,8 @@ const styles = {
   viewToggleBtn: { display: "flex", alignItems: "center", gap: 5, border: "none", background: "transparent", borderRadius: 8, padding: "5px 8px", cursor: "pointer", fontSize: 11.5, color: COLORS.inkMuted, fontFamily: "'Inter', sans-serif" },
   viewToggleBtnActive: { background: COLORS.card, color: COLORS.ink, fontWeight: 600, boxShadow: "0 1px 2px rgba(51,53,47,0.08)" },
   viewToggleLabel: { lineHeight: 1 },
-  brand: { fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 21, color: COLORS.ink },
-  brandLogo: { borderRadius: 12, flexShrink: 0, display: "block", boxShadow: "0 1px 3px rgba(31,58,14,0.25)" },
+  brand: { fontFamily: "'Lobster', 'Fraunces', serif", fontWeight: 400, fontSize: 25, color: COLORS.primaryText, letterSpacing: 0.2 },
+  brandLogo: { borderRadius: 12, flexShrink: 0, display: "block", boxShadow: "0 1px 3px rgba(60,20,6,0.28)" },
   brandSub: { marginInlineStart: 8, fontSize: 11, color: COLORS.inkMuted, letterSpacing: "0.03em", flex: 1 },
   settingsButton: { background: COLORS.paper, border: `1px solid ${COLORS.line}`, borderRadius: 10, width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" },
   screenArea: { flex: 1, overflowY: "auto", position: "relative", zIndex: 1 },

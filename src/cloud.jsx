@@ -71,7 +71,7 @@ const INTRO = [
     emoji: "🥕",
     logo: true,
     title: { en: "Cook with what you have", es: "Cocina con lo que tienes", fr: "Cuisinez avec ce que vous avez", pt: "Cozinhe com o que você tem", hi: "जो है उसी से पकाएं", zh: "用现有食材做饭", ar: "اطبخ بما لديك" },
-    body: { en: "Tell My Sous what's in your kitchen and it shows meals you can make right now, plus the ones you're one or two items away from.", es: "Dile a My Sous qué hay en tu cocina y te mostrará comidas que puedes hacer ahora, y las que te faltan uno o dos ingredientes.", fr: "Dites à My Sous ce qu'il y a dans votre cuisine : il vous montre les plats possibles tout de suite, et ceux à un ou deux ingrédients près.", pt: "Diga ao My Sous o que há na sua cozinha e ele mostra as refeições que você pode fazer agora, e as que faltam um ou dois itens.", hi: "My Sous को बताएं कि आपकी रसोई में क्या है, और यह दिखाएगा कि आप अभी क्या बना सकते हैं, और किनके लिए बस एक-दो चीज़ें कम हैं।", zh: "告诉 My Sous 你厨房里有什么，它会显示你现在就能做的菜，以及只差一两样食材的菜。", ar: "أخبر My Sous بما في مطبخك وسيعرض لك الوجبات التي يمكنك تحضيرها الآن، وتلك التي ينقصها مكوّن أو اثنان." },
+    body: { en: "Tell Auntie Ceci what's in your kitchen and she'll show you meals you can make right now, plus the ones you're one or two items away from.", es: "Dile a Auntie Ceci qué hay en tu cocina y te mostrará comidas que puedes hacer ahora, y las que te faltan uno o dos ingredientes.", fr: "Dites à Auntie Ceci ce qu'il y a dans votre cuisine : elle vous montre les plats possibles tout de suite, et ceux à un ou deux ingrédients près.", pt: "Diga à Auntie Ceci o que há na sua cozinha e ela mostra as refeições que você pode fazer agora, e as que faltam um ou dois itens.", hi: "Auntie Ceci को बताएं कि आपकी रसोई में क्या है, और यह दिखाएगा कि आप अभी क्या बना सकते हैं, और किनके लिए बस एक-दो चीज़ें कम हैं।", zh: "告诉 Auntie Ceci 你厨房里有什么，它会显示你现在就能做的菜，以及只差一两样食材的菜。", ar: "أخبر Auntie Ceci بما في مطبخك وسيعرض لك الوجبات التي يمكنك تحضيرها الآن، وتلك التي ينقصها مكوّن أو اثنان." },
   },
   {
     emoji: "👨‍🍳",
@@ -214,8 +214,8 @@ export function AuthScreen({ sb, onGuest }) {
       }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: desktop ? "14px 24px" : "16px 20px", borderBottom: `1px solid ${C.line}`, flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <img src={LOGO_HEADER} alt="My Sous logo" width={52} height={52} style={{ borderRadius: 12, display: "block", boxShadow: "0 1px 3px rgba(31,58,14,0.25)" }} />
-            <span style={{ fontFamily: "Georgia, serif", fontSize: 22, fontWeight: 700 }}>My Sous</span>
+            <img src={LOGO_HEADER} alt="Auntie Ceci logo" width={52} height={52} style={{ borderRadius: 12, display: "block", boxShadow: "0 1px 3px rgba(60,20,6,0.28)" }} />
+            <span style={{ fontFamily: "'Lobster', Georgia, serif", fontSize: 25, fontWeight: 400, color: C.sageText }}>Auntie Ceci</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <button onClick={toggleTheme} aria-label={dark ? "Light mode" : "Dark mode"} title={dark ? "Light mode" : "Dark mode"} style={{ width: 32, height: 32, borderRadius: 10, border: `1px solid ${C.line}`, background: C.paper, color: C.muted, cursor: "pointer", fontSize: 15, lineHeight: 1 }}>{dark ? "☀" : "☾"}</button>
@@ -228,13 +228,13 @@ export function AuthScreen({ sb, onGuest }) {
               {slide < INTRO.length && INTRO[slide].meals ? (
                 <div className="ms-auth-meals" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, width: "100%", maxWidth: 340 }}>
                   {meals.map((m, i) => (
-                    <img key={m.id} src={m.src} className="ms-meal-in" alt="" style={{ width: "100%", aspectRatio: "1 / 1", objectFit: "cover", borderRadius: 18, display: "block", boxShadow: "0 8px 20px rgba(31,58,14,0.18)", transform: `rotate(${[-2, 1.5, 1.5, -2][i]}deg)` }} />
+                    <img key={m.id} src={m.src} className="ms-meal-in" alt="" style={{ width: "100%", aspectRatio: "1 / 1", objectFit: "cover", borderRadius: 18, display: "block", boxShadow: "0 8px 20px rgba(60,20,6,0.20)", transform: `rotate(${[-2, 1.5, 1.5, -2][i]}deg)` }} />
                   ))}
                 </div>
               ) : (
-                <img className="ms-auth-logo" src={LOGO_LARGE} alt="" width={280} height={280} style={{ borderRadius: 62, maxWidth: "100%", height: "auto", display: "block", boxShadow: "0 12px 30px rgba(31,58,14,0.25)" }} />
+                <img className="ms-auth-logo" src={LOGO_LARGE} alt="" width={280} height={280} style={{ borderRadius: 62, maxWidth: "100%", height: "auto", display: "block", boxShadow: "0 12px 30px rgba(60,20,6,0.28)" }} />
               )}
-              <div style={{ fontFamily: "Georgia, serif", fontSize: 22, color: C.sageText, textAlign: "center", maxWidth: 320, lineHeight: 1.35 }}>My Sous</div>
+              <div style={{ fontFamily: "'Lobster', Georgia, serif", fontSize: 30, color: C.sageText, textAlign: "center", maxWidth: 320, lineHeight: 1.35 }}>Auntie Ceci</div>
             </div>
             <div className="ms-auth-body" style={{ padding: "48px 40px", display: "flex", alignItems: "center" }}>{content}</div>
           </div>
