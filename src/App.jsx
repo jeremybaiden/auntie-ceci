@@ -7875,6 +7875,7 @@ export default function App() {
               owned={ownsIngredient}
               country={shopCountry}
               dailyGoal={profile.nutritionGoals && profile.nutritionGoals.calories ? Math.round(profile.nutritionGoals.calories) : null}
+              nutritionGoals={profile.nutritionGoals || null}
               onCook={(r, n) => { setPrevScreen("mealprep"); startGuided(r, n); }}
               onAddToShopping={addManyShoppingItems}
               onBack={() => setScreen(["home", "more"].includes(prevScreen) ? prevScreen : "more")}
@@ -10743,6 +10744,7 @@ const MEALPREP_UI = {
   COLORS,
   LanguageContext,
   RecipeImage,
+  recipeImageUrl: (r) => (isPhotoData(r.photo) ? r.photo : RECIPE_IMAGES[r.remixOf || r.id]) || null,
   recipeName,
   ingredientLabel: (name, language) => ingredientLabel(name, language),
   mealLabel: (id, lang) => (MEAL_TIMES_TR[id] && (MEAL_TIMES_TR[id][lang] || MEAL_TIMES_TR[id].en)) || id,

@@ -1,7 +1,7 @@
 // Meal prep: an optional planner. A short questionnaire (like a meal-kit sign-up) turns the cook's
 // goals, schedule, budget and kitchen into cook days, batch servings, an eating calendar and a
 // grocery list. Prices are rough per-serving averages, clearly labelled as estimates.
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 
 const S = (en, es, fr, pt, hi, zh, ar) => ({ en, es, fr, pt, hi, zh, ar });
 
@@ -96,6 +96,16 @@ export const MP = {
   clampLo: S("Portions stop at ×0.5. Plan fewer meals to get closer.", "Las porciones bajan hasta ×0.5. Planifica menos comidas para acercarte.", "Les portions s'arrêtent à ×0,5. Prévoyez moins de repas pour vous rapprocher.", "As porções vão até ×0,5. Planeje menos refeições para chegar mais perto.", "हिस्सा ×0.5 से कम नहीं होता। करीब पहुंचने के लिए कम खाने प्लान करें।", "份量最少 ×0.5。少规划几餐会更接近目标。", "الحصص لا تقل عن ×0.5. خطّط لوجبات أقل لتقترب."),
   macrosLine: S("Protein {p} g · Carbs {c} g · Fat {f} g a day", "Proteína {p} g · Carbohidratos {c} g · Grasa {f} g al día", "Protéines {p} g · Glucides {c} g · Lipides {f} g par jour", "Proteína {p} g · Carboidratos {c} g · Gordura {f} g por dia", "रोज़ प्रोटीन {p} g · कार्ब्स {c} g · फ़ैट {f} g", "每天蛋白质 {p} g · 碳水 {c} g · 脂肪 {f} g", "يوميًا: بروتين {p} غ · كربوهيدرات {c} غ · دهون {f} غ"),
   nutrNote: S("Calories come from each recipe's nutrition estimate. A rough guide, not medical advice.", "Las calorías salen de la estimación nutricional de cada receta. Es una guía aproximada, no consejo médico.", "Les calories viennent de l'estimation nutritionnelle de chaque recette. Un repère approximatif, pas un avis médical.", "As calorias vêm da estimativa nutricional de cada receita. É um guia aproximado, não orientação médica.", "कैलोरी हर रेसिपी के पोषण अनुमान से है। यह मोटा अंदाज़ा है, डॉक्टरी सलाह नहीं।", "热量来自每个食谱的营养估算，仅供粗略参考，不是医疗建议。", "السعرات مأخوذة من تقدير تغذية كل وصفة. دليل تقريبي وليس نصيحة طبية."),
+  macrosTitle: S("Macro goals", "Metas de macros", "Objectifs de macros", "Metas de macros", "मैक्रो लक्ष्य", "宏量营养目标", "أهداف المغذيات"),
+  macrosSub: S("Slide to set your daily protein, carbs and fat. Your calorie goal, portions, groceries and recipes follow.", "Desliza para fijar tu proteína, carbohidratos y grasa diarios. Tu meta de calorías, porciones, compras y recetas se ajustan.", "Faites glisser pour régler protéines, glucides et lipides par jour. Calories, portions, courses et recettes suivent.", "Deslize para definir proteína, carboidratos e gordura por dia. Calorias, porções, compras e receitas acompanham.", "रोज़ का प्रोटीन, कार्ब्स और फ़ैट तय करने के लिए स्लाइड करें। कैलोरी, हिस्से, किराना और रेसिपी साथ में बदलेंगे।", "滑动设置每日蛋白质、碳水和脂肪。热量目标、份量、采购和食谱会随之调整。", "اسحب لتحديد البروتين والكربوهيدرات والدهون يوميًا. يتبعها هدف السعرات والحصص والمشتريات والوصفات."),
+  protein: S("Protein", "Proteína", "Protéines", "Proteína", "प्रोटीन", "蛋白质", "البروتين"),
+  carbs: S("Carbs", "Carbohidratos", "Glucides", "Carboidratos", "कार्ब्स", "碳水", "الكربوهيدرات"),
+  fat: S("Fat", "Grasa", "Lipides", "Gordura", "फ़ैट", "脂肪", "الدهون"),
+  planVsGoal: S("plan {a} g of {b} g", "plan {a} g de {b} g", "plan {a} g sur {b} g", "plano {a} g de {b} g", "प्लान {a} g / {b} g", "计划 {a} g / {b} g", "الخطة {a} غ من {b} غ"),
+  resetMacros: S("Reset to my goals", "Restablecer a mis metas", "Revenir à mes objectifs", "Voltar às minhas metas", "मेरे लक्ष्य पर लौटें", "恢复为我的目标", "العودة إلى أهدافي"),
+  carouselTitle: S("Dishes your plan could include", "Platos que podría incluir tu plan", "Des plats que votre plan pourrait inclure", "Pratos que seu plano pode incluir", "आपके प्लान में आ सकने वाले व्यंजन", "你的计划可能包含的菜", "أطباق قد تتضمنها خطتك"),
+  prevDish: S("Previous dishes", "Platos anteriores", "Plats précédents", "Pratos anteriores", "पिछले व्यंजन", "上一组", "الأطباق السابقة"),
+  nextDish: S("More dishes", "Más platos", "Plus de plats", "Mais pratos", "और व्यंजन", "下一组", "أطباق أخرى"),
   peopleShort: S("People", "Personas", "Personnes", "Pessoas", "लोग", "人数", "الأشخاص"),
   mealsShort: S("Meals", "Comidas", "Repas", "Refeições", "खाने", "餐次", "الوجبات"),
   cooksShort: S("Cook days a week", "Días de cocina por semana", "Jours de cuisine par semaine", "Dias de cozinhar por semana", "हफ़्ते में बनाने के दिन", "每周做饭天数", "أيام الطبخ في الأسبوع"),
@@ -241,6 +251,19 @@ export function finalizePlan(plan, byId) {
   return { ...plan, weeks, portion, clamp };
 }
 
+// Daily macro goals (grams). Saved ones win; else the cook's Nutrition goals scaled to the calorie
+// goal; else a 25% protein / 50% carbs / 25% fat split.
+export function macroGoals(a, goals) {
+  if (a.macros && a.macros.p) return a.macros;
+  const cal = a.dailyCal || (goals && goals.calories) || 2000;
+  if (goals && goals.calories && goals.protein) {
+    const k = cal / goals.calories;
+    return { p: Math.round(goals.protein * k), c: Math.round((goals.carbs || 0) * k), f: Math.round((goals.fat || 0) * k) };
+  }
+  return { p: Math.round((cal * 0.25) / 4), c: Math.round((cal * 0.5) / 4), f: Math.round((cal * 0.25) / 9) };
+}
+export const macroCal = (m) => 4 * m.p + 4 * m.c + 9 * m.f;
+
 function weeklyBudgetCad(a, rate) {
   const amt = parseFloat(String(a.budget).replace(",", "."));
   if (!(amt > 0)) return null;
@@ -288,6 +311,12 @@ function scoreRecipe(r, a, ctx, opts) {
   if (opts.usedBefore.has(r.id)) s -= 2;
   // Lean toward recipes whose normal serving is near this meal's share of the daily goal.
   if (opts.mealTarget && calOf(r)) s -= Math.min(3, Math.abs(calOf(r) - opts.mealTarget) / 250);
+  // And toward the protein / carb / fat balance the cook asked for (only when they set one).
+  if (a.macros && a.macros.p && calOf(r)) {
+    const tc = macroCal(a.macros) || 1, m = r.macros || {};
+    const share = (g, k) => ((Number(g) || 0) * k) / calOf(r);
+    s -= 6 * (Math.abs(share(m.protein, 4) - (a.macros.p * 4) / tc) + Math.abs(share(m.carbs, 4) - (a.macros.c * 4) / tc) + Math.abs(share(m.fat, 9) - (a.macros.f * 9) / tc));
+  }
   // Variety within a week: avoid near-duplicates (same cuisine, or two main ingredients in common).
   const mains = r.ingredients.filter((i) => !isStaple(i));
   for (const other of opts.weekPicks || []) {
@@ -408,7 +437,7 @@ export function groceriesFor(weeks, ctx) {
 }
 
 // ---------- UI ----------
-export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, matchInfo, allergiesFor, owned, country, dailyGoal, onCook, onAddToShopping, onBack }) {
+export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, matchInfo, allergiesFor, owned, country, dailyGoal, nutritionGoals, onCook, onAddToShopping, onBack }) {
   const { language } = useContext(ui.LanguageContext);
   const tr = (k, vars) => { let s = (MP[k] && (MP[k][language] || MP[k].en)) || k; if (vars) for (const [kk, v] of Object.entries(vars)) s = s.replace(`{${kk}}`, v); return s; };
   const L = (o) => o[language] || o.en;
@@ -467,8 +496,13 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
     const gives = n.cal * portion;
     const diff = gives - target;
     const ok = target > 0 && Math.abs(diff) <= target * 0.1;
-    const setGoal = (v) => onChange({ dailyCal: Math.max(1000, Math.min(5000, v)), portionMode: "auto" });
-    const setPortion = (v) => { const pv = Math.max(PORTION_MIN, Math.min(PORTION_MAX, v)); onChange({ portion: pv, portionMode: "manual", dailyCal: Math.max(1000, Math.min(5000, roundTo((n.cal * pv) / share, 50))) }); };
+    const mg = macroGoals({ ...answers, dailyCal: goal }, nutritionGoals);
+    // Scale saved macro goals with the calorie goal so the two never disagree.
+    const scaleMacros = (cal) => (answers.macros && answers.macros.p ? { macros: { p: Math.round(answers.macros.p * cal / goal), c: Math.round(answers.macros.c * cal / goal), f: Math.round(answers.macros.f * cal / goal) } } : {});
+    const setGoal = (v) => { const cal = Math.max(1000, Math.min(5000, v)); onChange({ dailyCal: cal, portionMode: "auto", ...scaleMacros(cal) }); };
+    const setPortion = (v) => { const pv = Math.max(PORTION_MIN, Math.min(PORTION_MAX, v)); const cal = Math.max(1000, Math.min(5000, roundTo((n.cal * pv) / share, 50))); onChange({ portion: pv, portionMode: "manual", dailyCal: cal, ...scaleMacros(cal) }); };
+    // A macro slider sets that macro; calories become 4/4/9 kcal per gram; recipes re-pick toward the balance.
+    const setMacro = (key, val) => { const m = { ...mg, [key]: val }; onChange({ macros: m, dailyCal: Math.max(1000, Math.min(5000, roundTo(macroCal(m), 10))), portionMode: "auto" }, true); };
     const source = dailyGoal && goal === dailyGoal ? tr("fromGoals") : !dailyGoal && goal === 2000 ? tr("typical") : null;
     return (
       <div style={{ marginTop: 14, background: COLORS.card, border: `1px solid ${COLORS.line}`, borderRadius: 16, padding: "12px 16px" }}>
@@ -486,6 +520,8 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
         </div>
         {!ok && planObj.clamp === "hi" && <div style={{ fontSize: 12, color: COLORS.inkMuted, marginTop: 2 }}>{tr("clampHi")}</div>}
         {!ok && planObj.clamp === "lo" && <div style={{ fontSize: 12, color: COLORS.inkMuted, marginTop: 2 }}>{tr("clampLo")}</div>}
+        <MacroSliders ui={ui} tr={tr} num={num} goals={mg} planned={{ p: n.p * portion, c: n.c * portion, f: n.f * portion }} share={share} onSet={setMacro}
+          canReset={!!(answers.macros && answers.macros.p)} onReset={() => onChange({ macros: null, dailyCal: (nutritionGoals && Math.round(nutritionGoals.calories)) || dailyGoal || 2000, portionMode: "auto" }, true)} />
         <div style={{ fontSize: 11.5, color: COLORS.inkMuted, marginTop: 8 }}>{tr("nutrNote")}</div>
       </div>
     );
@@ -653,6 +689,7 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
           style={{ ...styles.primaryButton, opacity: canNext ? 1 : 0.5 }}>
           {last ? tr("create") : tr("next")}
         </button>
+        <FoodCarousel ui={ui} tr={tr} recipes={recipes} answers={a} allergiesFor={allergiesFor} mealLabel={mealLabel} />
       </div>
     );
   }
@@ -675,6 +712,7 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
           ))}
         </div>
         <button data-tour="mealprep-start" onClick={() => { setDraft({ ...DEFAULT_ANSWERS, dailyCal: dailyGoal || 2000, seed: newSeed() }); setStep(0); }} style={styles.primaryButton}>{tr("start")}</button>
+        <FoodCarousel ui={ui} tr={tr} recipes={recipes} answers={DEFAULT_ANSWERS} allergiesFor={allergiesFor} mealLabel={mealLabel} />
       </div>
     );
   }
@@ -697,7 +735,7 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
       <div style={{ marginTop: 16, background: COLORS.sageSofter, border: `1px solid ${COLORS.sage}`, borderRadius: 16, padding: "14px 16px" }}>
         <div style={{ fontWeight: 700, fontSize: 15.5 }}>⚙️ {tr("adjustTitle")}</div>
         <div style={{ fontSize: 12.5, color: COLORS.inkMuted, marginTop: 2 }}>{tr("adjustSub")}</div>
-        <NutritionCard planObj={plan} answers={a2} onChange={(patch) => apply(patch, false)} />
+        <NutritionCard planObj={plan} answers={a2} onChange={(patch, repick) => apply(patch, !!repick)} />
         <div style={{ marginTop: 12 }}>
           {fieldRow(tr("peopleShort"), stepper(a2.people, () => apply({ people: Math.max(1, a2.people - 1) }, false), () => apply({ people: Math.min(12, a2.people + 1) }, false), tr("peopleShort"), 40))}
           {fieldRow(tr("budget"), (
@@ -911,5 +949,115 @@ export function MealPrepHomeCard({ ui, hasPlan, onOpen }) {
         <span style={{ display: "inline-block", marginTop: 6, fontSize: 13, fontWeight: 600, color: COLORS.primaryText }}>{hasPlan ? tr("homeOpen") : tr("homeCta")} →</span>
       </span>
     </button>
+  );
+}
+
+// Protein / carbs / fat as sliders ("like a scale"). Local while dragging; commits on release.
+function MacroSliders({ ui, tr, num, goals, planned, share, onSet, canReset, onReset }) {
+  const { COLORS } = ui;
+  const [local, setLocal] = useState(goals);
+  useEffect(() => { setLocal(goals); }, [goals.p, goals.c, goals.f]);
+  const rows = [
+    { key: "p", label: tr("protein"), min: 30, max: 300, color: "var(--ms-primary)" },
+    { key: "c", label: tr("carbs"), min: 50, max: 500, color: "var(--ms-accent)" },
+    { key: "f", label: tr("fat"), min: 20, max: 200, color: "var(--ms-accent-text)" },
+  ];
+  const commit = (key) => { if (local[key] !== goals[key]) onSet(key, local[key]); };
+  return (
+    <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${COLORS.line}` }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
+        <div style={{ fontWeight: 700, fontSize: 14 }}>{tr("macrosTitle")}</div>
+        {canReset && <button onClick={onReset} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontSize: 12.5, color: COLORS.primaryText, fontFamily: "inherit" }}>{tr("resetMacros")}</button>}
+      </div>
+      <div style={{ fontSize: 12, color: COLORS.inkMuted, marginTop: 2 }}>{tr("macrosSub")}</div>
+      {rows.map((r) => {
+        const goalPlanned = local[r.key] * share; // the part of the day's goal the planned meals should cover
+        const pct = goalPlanned > 0 ? Math.min(150, (planned[r.key] / goalPlanned) * 100) : 0;
+        return (
+          <div key={r.key} style={{ marginTop: 12 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
+              <label htmlFor={`mp-macro-${r.key}`} style={{ fontWeight: 600 }}>{r.label}</label>
+              <span><strong>{num(local[r.key])} g</strong> <span style={{ color: COLORS.inkMuted, fontSize: 12 }}>· {tr("planVsGoal", { a: num(planned[r.key]), b: num(goalPlanned) })}</span></span>
+            </div>
+            <input id={`mp-macro-${r.key}`} type="range" min={r.min} max={r.max} step={5} value={Math.max(r.min, Math.min(r.max, local[r.key]))}
+              onChange={(e) => setLocal({ ...local, [r.key]: Number(e.target.value) })}
+              onPointerUp={() => commit(r.key)} onKeyUp={() => commit(r.key)} onBlur={() => commit(r.key)} onTouchEnd={() => commit(r.key)}
+              style={{ width: "100%", accentColor: r.color, marginTop: 4 }} />
+            <div style={{ height: 5, borderRadius: 3, background: COLORS.line, overflow: "hidden" }} aria-hidden="true">
+              <div style={{ height: "100%", width: `${Math.min(100, pct / 1.5)}%`, background: Math.abs(pct - 100) <= 15 ? "var(--ms-primary)" : "var(--ms-accent)" }} />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// Sliding row of real dishes from the recipe library, shuffled every time it appears and narrowed
+// to the answers so far (diet, meals, allergies). Pauses on hover; still for reduced-motion users.
+function FoodCarousel({ ui, tr, recipes, answers, allergiesFor, mealLabel }) {
+  const { COLORS } = ui;
+  const { language } = useContext(ui.LanguageContext);
+  const wrapRef = useRef(null);
+  const [visible, setVisible] = useState(3);
+  const [idx, setIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [instant, setInstant] = useState(false);
+  const key = `${answers.prefs.filter((p) => p === "vegan" || p === "vegetarian").join()}|${answers.meals.join()}`;
+  const list = useMemo(() => {
+    const ok = recipes.filter((r) => ui.recipeImageUrl(r) && !allergiesFor(r).length
+      && (!answers.prefs.includes("vegan") || (r.categories || []).includes("vegan"))
+      && (!answers.prefs.includes("vegetarian") || (r.categories || []).some((c) => c === "vegetarian" || c === "vegan"))
+      && (!answers.meals.length || (r.mealTime || []).some((m) => answers.meals.includes(m))));
+    const arr = ok.slice();
+    for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
+    return arr.slice(0, 16);
+  }, [recipes, key]);
+  useEffect(() => { setIdx(0); }, [key]);
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => setVisible(Math.max(2, Math.min(6, Math.floor(el.clientWidth / 170)))));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const reduce = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  useEffect(() => {
+    if (paused || reduce || list.length <= visible) return;
+    const id = setInterval(() => setIdx((i) => Math.min(i + 1, list.length)), 2800);
+    return () => clearInterval(id);
+  }, [paused, reduce, list.length, visible]);
+  // After sliding onto the copied first tiles, jump back to the real start without animating.
+  useEffect(() => { if (!instant) return; const id = requestAnimationFrame(() => requestAnimationFrame(() => setInstant(false))); return () => cancelAnimationFrame(id); }, [instant]);
+  const onSlid = () => { if (idx >= list.length) { setInstant(true); setIdx(0); } };
+  if (list.length < 2) return null;
+  const loop = [...list, ...list.slice(0, visible)];
+  const gap = 10;
+  const step = `calc((100% - ${(visible - 1) * gap}px) / ${visible} + ${gap}px)`;
+  const arrow = { width: 30, height: 30, borderRadius: 15, border: `1px solid ${COLORS.line}`, background: COLORS.card, color: COLORS.ink, cursor: "pointer", fontSize: 15, lineHeight: 1 };
+  return (
+    <section style={{ marginTop: 28 }} aria-label={tr("carouselTitle")} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 10 }}>
+        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: COLORS.inkMuted }}>{tr("carouselTitle")}</div>
+        <div style={{ display: "flex", gap: 6 }}>
+          <button style={arrow} aria-label={tr("prevDish")} onClick={() => { if (idx === 0) { setInstant(true); setIdx(list.length - 1); } else setIdx(idx - 1); }}><span className="ms-flip" style={{ display: "inline-block" }}>‹</span></button>
+          <button style={arrow} aria-label={tr("nextDish")} onClick={() => setIdx((i) => Math.min(i + 1, list.length))}><span className="ms-flip" style={{ display: "inline-block" }}>›</span></button>
+        </div>
+      </div>
+      <div ref={wrapRef} style={{ overflow: "hidden", borderRadius: 14 }} dir="ltr">
+        <div style={{ display: "flex", gap, transform: `translateX(calc(-1 * ${idx} * ${step}))`, transition: instant ? "none" : "transform .6s ease" }} onTransitionEnd={onSlid}>
+          {loop.map((r, i) => (
+            <div key={`${r.id}-${i}`} style={{ flex: `0 0 calc((100% - ${(visible - 1) * gap}px) / ${visible})`, borderRadius: 14, overflow: "hidden", position: "relative", aspectRatio: "4 / 3",
+              backgroundColor: (r.color && r.color[0]) || "#eee", backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.72)), url(${ui.recipeImageUrl(r)})`, backgroundSize: "cover", backgroundPosition: "center" }}
+              role="img" aria-label={ui.recipeName(r, language)}>
+              <div style={{ position: "absolute", left: 10, right: 10, bottom: 8, color: "#fff", textAlign: language === "ar" ? "right" : "left" }} dir={language === "ar" ? "rtl" : "ltr"}>
+                <div style={{ fontWeight: 700, fontSize: 13.5, lineHeight: 1.25, textShadow: "0 1px 3px rgba(0,0,0,.5)" }}>{ui.recipeName(r, language)}</div>
+                <div style={{ fontSize: 11.5, opacity: 0.92, marginTop: 2 }}>{(r.mealTime || []).slice(0, 1).map(mealLabel).join("")}{r.time ? ` · ${r.time}` : ""}{calOf(r) ? ` · ${calOf(r)} kcal` : ""}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
