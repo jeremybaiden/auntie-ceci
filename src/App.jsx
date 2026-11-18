@@ -47,7 +47,7 @@ const AllergyContext = createContext([]);
 const GoalsContext = createContext(null);
 
 // The one address for feedback, used everywhere in the app.
-export const FEEDBACK_EMAIL = "mysous.feedback@gmail.com";
+export const FEEDBACK_EMAIL = "auntiececifeedback@gmail.com";
 import { build } from "./world/build.js";
 import { AFRICAN } from "./world/african.js";
 import { BRAZILIAN } from "./world/brazilian.js";
