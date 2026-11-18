@@ -7874,6 +7874,7 @@ export default function App() {
               allergiesFor={(r) => allergensFor(r, profile.allergies || [])}
               owned={ownsIngredient}
               country={shopCountry}
+              dailyGoal={profile.nutritionGoals && profile.nutritionGoals.calories ? Math.round(profile.nutritionGoals.calories) : null}
               onCook={(r, n) => { setPrevScreen("mealprep"); startGuided(r, n); }}
               onAddToShopping={addManyShoppingItems}
               onBack={() => setScreen(["home", "more"].includes(prevScreen) ? prevScreen : "more")}

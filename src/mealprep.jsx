@@ -78,6 +78,31 @@ export const MP = {
   remove: S("Delete plan", "Borrar plan", "Supprimer le plan", "Apagar plano", "प्लान हटाएं", "删除计划", "حذف الخطة"),
   relaxed: S("Not every recipe fits all your answers (time or tools), so a few limits were relaxed.", "No todas las recetas encajan con todas tus respuestas (tiempo o utensilios), así que se relajaron algunos límites.", "Toutes les recettes ne correspondent pas à toutes vos réponses (temps ou ustensiles) : quelques limites ont été assouplies.", "Nem toda receita se encaixa em todas as respostas (tempo ou utensílios), então alguns limites foram flexibilizados.", "हर रेसिपी आपके सभी जवाबों (समय या बर्तन) में फिट नहीं होती, इसलिए कुछ सीमाएं थोड़ी ढीली की गईं।", "并非每个食谱都符合你的全部条件（时间或厨具），所以放宽了一些限制。", "ليست كل الوصفات تناسب كل إجاباتك (الوقت أو الأدوات)، لذا خُففت بعض القيود."),
   noRecipes: S("No recipes match these answers. Try fewer limits.", "Ninguna receta coincide. Prueba con menos límites.", "Aucune recette ne correspond. Essayez avec moins de limites.", "Nenhuma receita combina. Tente com menos limites.", "इन जवाबों से कोई रेसिपी मेल नहीं खाती। कम शर्तें रखें।", "没有符合条件的食谱，试着少设一些限制。", "لا توجد وصفات مطابقة. جرّب قيودًا أقل."),
+  adjustTitle: S("Adjust your plan", "Ajusta tu plan", "Ajustez votre plan", "Ajuste seu plano", "अपना प्लान बदलें", "调整你的计划", "عدّل خطتك"),
+  adjustSub: S("Change anything here: servings, groceries, cost and calories all update together.", "Cambia lo que quieras: porciones, compras, costo y calorías se actualizan juntos.", "Modifiez ce que vous voulez : portions, courses, coût et calories se mettent à jour ensemble.", "Mude o que quiser: porções, compras, custo e calorias se atualizam juntos.", "यहां कुछ भी बदलें: सर्विंग, किराना, खर्च और कैलोरी सब साथ में बदलेंगे।", "随意调整：份数、采购、费用和热量会一起更新。", "غيّر ما تشاء: تتحدث الحصص والمشتريات والتكلفة والسعرات معًا."),
+  repickNote: S("Changing these picks new recipes.", "Cambiar esto elige recetas nuevas.", "Modifier ceci choisit de nouvelles recettes.", "Mudar isto escolhe receitas novas.", "इन्हें बदलने पर नई रेसिपी चुनी जाएंगी।", "修改这些会重新挑选食谱。", "تغيير هذه يختار وصفات جديدة."),
+  nutrTitle: S("Daily calories", "Calorías diarias", "Calories par jour", "Calorias por dia", "रोज़ की कैलोरी", "每日热量", "السعرات اليومية"),
+  dailyGoal: S("Your daily goal", "Tu meta diaria", "Votre objectif quotidien", "Sua meta diária", "आपका रोज़ का लक्ष्य", "你的每日目标", "هدفك اليومي"),
+  fromGoals: S("from your Nutrition goals", "de tus metas de nutrición", "d'après vos objectifs nutritionnels", "das suas metas de nutrição", "आपके पोषण लक्ष्यों से", "来自你的营养目标", "من أهدافك الغذائية"),
+  typical: S("a typical adult estimate; set yours in Nutrition goals", "una estimación típica para adultos; fija la tuya en Metas de nutrición", "une estimation adulte typique ; fixez la vôtre dans Objectifs nutritionnels", "uma estimativa típica de adulto; defina a sua em Metas de nutrição", "आम वयस्क का अनुमान; अपना लक्ष्य पोषण लक्ष्य में सेट करें", "成人常见估算；可在营养目标里设置你自己的", "تقدير معتاد للبالغين؛ حدّد هدفك في الأهداف الغذائية"),
+  coverShare: S("The planned meals cover about {p}% of a day, so the plan aims for about {n} kcal.", "Las comidas planificadas cubren cerca del {p}% del día, así que el plan apunta a unas {n} kcal.", "Les repas prévus couvrent environ {p} % de la journée : le plan vise environ {n} kcal.", "As refeições planejadas cobrem cerca de {p}% do dia, então o plano mira em umas {n} kcal.", "प्लान वाले खाने दिन का लगभग {p}% हिस्सा हैं, इसलिए प्लान लगभग {n} kcal का लक्ष्य रखता है।", "计划内的餐约占一天的 {p}%，所以计划目标约为 {n} 千卡。", "تغطي الوجبات المخططة نحو {p}% من اليوم، لذا تستهدف الخطة نحو {n} سعرة."),
+  planGives: S("This plan gives about {n} kcal a day per person", "Este plan da unas {n} kcal al día por persona", "Ce plan apporte environ {n} kcal par jour et par personne", "Este plano dá cerca de {n} kcal por dia por pessoa", "यह प्लान हर व्यक्ति को रोज़ लगभग {n} kcal देता है", "此计划每人每天约 {n} 千卡", "تقدّم هذه الخطة نحو {n} سعرة يوميًا للشخص"),
+  range: S("{a}–{b} depending on the day", "{a}–{b} según el día", "{a}–{b} selon le jour", "{a}–{b} dependendo do dia", "दिन के हिसाब से {a}–{b}", "视日子在 {a}–{b} 之间", "{a}–{b} حسب اليوم"),
+  portion: S("Portion size", "Tamaño de la porción", "Taille des portions", "Tamanho da porção", "हिस्से का आकार", "份量", "حجم الحصة"),
+  onTarget: S("On target", "En tu meta", "Dans l'objectif", "Na meta", "लक्ष्य पर", "符合目标", "ضمن الهدف"),
+  underBy: S("About {n} kcal under", "Unas {n} kcal por debajo", "Environ {n} kcal en dessous", "Cerca de {n} kcal abaixo", "लगभग {n} kcal कम", "约少 {n} 千卡", "أقل بنحو {n} سعرة"),
+  overBy: S("About {n} kcal over", "Unas {n} kcal por encima", "Environ {n} kcal au-dessus", "Cerca de {n} kcal acima", "लगभग {n} kcal ज़्यादा", "约多 {n} 千卡", "أكثر بنحو {n} سعرة"),
+  clampHi: S("Portions stop at ×2.5. Add a meal or snack to get closer.", "Las porciones llegan hasta ×2.5. Añade una comida o merienda para acercarte.", "Les portions s'arrêtent à ×2,5. Ajoutez un repas ou une collation pour vous rapprocher.", "As porções vão até ×2,5. Adicione uma refeição ou lanche para chegar mais perto.", "हिस्सा ×2.5 से ज़्यादा नहीं होता। करीब पहुंचने के लिए एक खाना या स्नैक जोड़ें।", "份量最多 ×2.5。加一餐或零食会更接近目标。", "الحصص تتوقف عند ×2.5. أضف وجبة أو وجبة خفيفة لتقترب."),
+  clampLo: S("Portions stop at ×0.5. Plan fewer meals to get closer.", "Las porciones bajan hasta ×0.5. Planifica menos comidas para acercarte.", "Les portions s'arrêtent à ×0,5. Prévoyez moins de repas pour vous rapprocher.", "As porções vão até ×0,5. Planeje menos refeições para chegar mais perto.", "हिस्सा ×0.5 से कम नहीं होता। करीब पहुंचने के लिए कम खाने प्लान करें।", "份量最少 ×0.5。少规划几餐会更接近目标。", "الحصص لا تقل عن ×0.5. خطّط لوجبات أقل لتقترب."),
+  macrosLine: S("Protein {p} g · Carbs {c} g · Fat {f} g a day", "Proteína {p} g · Carbohidratos {c} g · Grasa {f} g al día", "Protéines {p} g · Glucides {c} g · Lipides {f} g par jour", "Proteína {p} g · Carboidratos {c} g · Gordura {f} g por dia", "रोज़ प्रोटीन {p} g · कार्ब्स {c} g · फ़ैट {f} g", "每天蛋白质 {p} g · 碳水 {c} g · 脂肪 {f} g", "يوميًا: بروتين {p} غ · كربوهيدرات {c} غ · دهون {f} غ"),
+  nutrNote: S("Calories come from each recipe's nutrition estimate. A rough guide, not medical advice.", "Las calorías salen de la estimación nutricional de cada receta. Es una guía aproximada, no consejo médico.", "Les calories viennent de l'estimation nutritionnelle de chaque recette. Un repère approximatif, pas un avis médical.", "As calorias vêm da estimativa nutricional de cada receita. É um guia aproximado, não orientação médica.", "कैलोरी हर रेसिपी के पोषण अनुमान से है। यह मोटा अंदाज़ा है, डॉक्टरी सलाह नहीं।", "热量来自每个食谱的营养估算，仅供粗略参考，不是医疗建议。", "السعرات مأخوذة من تقدير تغذية كل وصفة. دليل تقريبي وليس نصيحة طبية."),
+  peopleShort: S("People", "Personas", "Personnes", "Pessoas", "लोग", "人数", "الأشخاص"),
+  mealsShort: S("Meals", "Comidas", "Repas", "Refeições", "खाने", "餐次", "الوجبات"),
+  cooksShort: S("Cook days a week", "Días de cocina por semana", "Jours de cuisine par semaine", "Dias de cozinhar por semana", "हफ़्ते में बनाने के दिन", "每周做饭天数", "أيام الطبخ في الأسبوع"),
+  sessionShort: S("Time each cook day", "Tiempo por día de cocina", "Temps par jour de cuisine", "Tempo por dia de cozinhar", "हर बार का समय", "每次做饭时间", "الوقت في كل يوم طبخ"),
+  lengthShort: S("Plan length", "Duración del plan", "Durée du plan", "Duração do plano", "प्लान की अवधि", "计划时长", "مدة الخطة"),
+  prefsShort: S("Food preferences", "Preferencias", "Préférences", "Preferências", "पसंद", "饮食偏好", "التفضيلات"),
+  perPersonDay: S("per person", "por persona", "par personne", "por pessoa", "प्रति व्यक्ति", "每人", "للشخص"),
   person: S("person", "persona", "personne", "pessoa", "व्यक्ति", "人", "شخص"),
   people: S("people", "personas", "personnes", "pessoas", "लोग", "人", "أشخاص"),
 };
@@ -106,7 +131,7 @@ export const MP_PREFS = [
 const SESSION_OPTS = [20, 45, 90, 150];
 const LENGTHS = [{ id: "1w", days: 7, key: "oneWeek" }, { id: "2w", days: 14, key: "twoWeeks" }, { id: "4w", days: 28, key: "month" }, { id: "custom", days: 0, key: "custom" }];
 
-export const DEFAULT_ANSWERS = { reasons: [], prefs: [], people: 1, meals: ["lunch", "dinner"], sessions: 2, sessionMin: 45, length: "1w", days: 10, budget: "", budgetPer: "week", useKitchen: true };
+export const DEFAULT_ANSWERS = { reasons: [], prefs: [], people: 1, meals: ["lunch", "dinner"], sessions: 2, sessionMin: 45, length: "1w", days: 10, budget: "", budgetPer: "week", useKitchen: true, dailyCal: null, portion: 1, portionMode: "auto" };
 
 // ---------- Rough prices (CAD) ----------
 // Staples last many meals: counted once per plan if you don't have them. Everything else is per serving.
@@ -176,6 +201,46 @@ function rng(seed) {
 
 export const planDays = (a) => (a.length === "custom" ? Math.max(3, Math.min(31, parseInt(a.days, 10) || 7)) : (LENGTHS.find((l) => l.id === a.length) || LENGTHS[0]).days);
 
+// Rough share of a day's calories each meal usually provides.
+const MEAL_SHARE = { breakfast: 0.25, lunch: 0.3, dinner: 0.35, snack: 0.1 };
+export const mealShare = (meals) => Math.min(1, (meals.length ? meals : ["dinner"]).reduce((s, m) => s + (MEAL_SHARE[m] || 0.25), 0));
+const calOf = (r) => (r && r.macros && Number(r.macros.calories)) || 0;
+const roundTo = (n, step) => Math.round(n / step) * step;
+export const PORTION_MIN = 0.5, PORTION_MAX = 2.5;
+
+// Calories and macros per person per day at a portion size of 1, for every day of the plan.
+export function planNutrition(plan, byId) {
+  const days = planDays(plan.answers);
+  const perDay = Array.from({ length: days }, () => ({ cal: 0, p: 0, c: 0, f: 0 }));
+  for (const wk of plan.weeks) for (const s of wk.sessions) for (const it of s.items) {
+    const r = byId(it.recipeId);
+    if (!r) continue;
+    const m = r.macros || {};
+    for (let d = s.start; d < s.start + s.len && d < days; d++) {
+      perDay[d].cal += Number(m.calories) || 0; perDay[d].p += Number(m.protein) || 0; perDay[d].c += Number(m.carbs) || 0; perDay[d].f += Number(m.fat) || 0;
+    }
+  }
+  const avg = (k) => perDay.reduce((s, d) => s + d[k], 0) / (perDay.length || 1);
+  const cals = perDay.map((d) => d.cal);
+  return { perDay, cal: avg("cal"), p: avg("p"), c: avg("c"), f: avg("f"), min: Math.min(...cals), max: Math.max(...cals) };
+}
+
+// Ties everything together: portion size (from the calorie goal, unless set by hand) → servings.
+export function finalizePlan(plan, byId) {
+  const a = plan.answers;
+  const base = planNutrition(plan, byId).cal;
+  const target = (a.dailyCal || 2000) * mealShare(a.meals);
+  let portion = a.portion || 1;
+  let clamp = null;
+  if (a.portionMode !== "manual" && base > 0) {
+    const raw = target / base;
+    portion = Math.min(PORTION_MAX, Math.max(PORTION_MIN, roundTo(raw, 0.25)));
+    if (raw > PORTION_MAX + 0.12) clamp = "hi"; else if (raw < PORTION_MIN - 0.12) clamp = "lo";
+  }
+  const weeks = plan.weeks.map((wk) => ({ sessions: wk.sessions.map((s) => ({ ...s, items: s.items.map((it) => ({ ...it, servings: Math.max(1, Math.ceil(a.people * s.len * portion)) })) })) }));
+  return { ...plan, weeks, portion, clamp };
+}
+
 function weeklyBudgetCad(a, rate) {
   const amt = parseFloat(String(a.budget).replace(",", "."));
   if (!(amt > 0)) return null;
@@ -221,6 +286,8 @@ function scoreRecipe(r, a, ctx, opts) {
     if (c > opts.targetCad) s -= (c - opts.targetCad) * 3;
   }
   if (opts.usedBefore.has(r.id)) s -= 2;
+  // Lean toward recipes whose normal serving is near this meal's share of the daily goal.
+  if (opts.mealTarget && calOf(r)) s -= Math.min(3, Math.abs(calOf(r) - opts.mealTarget) / 250);
   // Variety within a week: avoid near-duplicates (same cuisine, or two main ingredients in common).
   const mains = r.ingredients.filter((i) => !isStaple(i));
   for (const other of opts.weekPicks || []) {
@@ -263,7 +330,8 @@ export function buildPlan(a, ctx, seed = Date.now()) {
     const sessions = sessionDays(dw, a.sessions).map(({ start, len }) => {
       const items = meals.map((meal) => {
         const pool = candidatesFor(meal, a, ctx).filter((r) => !usedThisWeek.has(r.id));
-        const scored = pool.map((r) => ({ r, s: scoreRecipe(r, a, ctx, { rand, maxMinutes, targetCad, usedBefore, weekIngredients, weekPicks }) })).sort((x, y) => y.s - x.s);
+        const mealTarget = (a.dailyCal || 2000) * (MEAL_SHARE[meal] || 0.25);
+        const scored = pool.map((r) => ({ r, s: scoreRecipe(r, a, ctx, { rand, maxMinutes, targetCad, usedBefore, weekIngredients, weekPicks, mealTarget }) })).sort((x, y) => y.s - x.s);
         const pick = scored[0] && scored[0].r;
         if (!pick) return { meal, recipeId: null, servings: 0 };
         if (recipeMinutes(pick) > maxMinutes || !ctx.matchInfo(pick).haveEquip) relaxed = true;
@@ -277,7 +345,7 @@ export function buildPlan(a, ctx, seed = Date.now()) {
     usedThisWeek.forEach((id) => usedBefore.add(id));
     out.push({ sessions });
   }
-  return { answers: a, seed, startDate: todayIso(), weeks: out, relaxed };
+  return finalizePlan({ answers: a, seed, startDate: todayIso(), weeks: out, relaxed }, ctx.byId);
 }
 
 // Next best recipe for one slot, skipping recipes already used that week.
@@ -293,7 +361,7 @@ export function swapPick(plan, w, si, ii, ctx) {
   const targetCad = wb != null ? wb / (a.people * meals.length * 7) : null;
   const pool = candidatesFor(item.meal, a, ctx).filter((r) => !used.has(r.id) && !tried.has(r.id));
   const weekPicks = week.sessions.flatMap((s, sj) => s.items.filter((x, ij) => !(sj === si && ij === ii)).map((x) => ctx.byId(x.recipeId))).filter(Boolean);
-  const opts = { rand, maxMinutes: Math.max(10, Math.round(a.sessionMin / meals.length)), targetCad, usedBefore: new Set(), weekIngredients: new Set(), weekPicks };
+  const opts = { rand, maxMinutes: Math.max(10, Math.round(a.sessionMin / meals.length)), targetCad, usedBefore: new Set(), weekIngredients: new Set(), weekPicks, mealTarget: (a.dailyCal || 2000) * (MEAL_SHARE[item.meal] || 0.25) };
   let best = pool.map((r) => ({ r, s: scoreRecipe(r, a, ctx, opts) })).sort((x, y) => y.s - x.s)[0];
   let nextTried = [...tried];
   if (!best) { // went through them all: start over from the full list
@@ -305,7 +373,7 @@ export function swapPick(plan, w, si, ii, ctx) {
   const weeks = plan.weeks.map((wk, wi) => wi !== w ? wk : {
     sessions: wk.sessions.map((s, sj) => sj !== si ? s : { ...s, items: s.items.map((x, ij) => ij !== ii ? x : { ...x, recipeId: best.r.id, tried: nextTried }) }),
   });
-  return { ...plan, weeks };
+  return finalizePlan({ ...plan, weeks }, ctx.byId);
 }
 
 const newSeed = () => Math.floor(Math.random() * 1e9) + 1;
@@ -340,7 +408,7 @@ export function groceriesFor(weeks, ctx) {
 }
 
 // ---------- UI ----------
-export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, matchInfo, allergiesFor, owned, country, onCook, onAddToShopping, onBack }) {
+export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, matchInfo, allergiesFor, owned, country, dailyGoal, onCook, onAddToShopping, onBack }) {
   const { language } = useContext(ui.LanguageContext);
   const tr = (k, vars) => { let s = (MP[k] && (MP[k][language] || MP[k].en)) || k; if (vars) for (const [kk, v] of Object.entries(vars)) s = s.replace(`{${kk}}`, v); return s; };
   const L = (o) => o[language] || o.en;
@@ -371,6 +439,56 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
   const numBtn = (active) => ({ ...tile(active), justifyContent: "center", fontWeight: 600, fontSize: 16, padding: "14px 0" });
   const fmtDay = (offset, opts = { weekday: "short", month: "short", day: "numeric" }) => {
     try { return new Intl.DateTimeFormat(LOCALES[language] || "en-CA", opts).format(dayDate(plan?.startDate, offset)); } catch { return dayDate(plan?.startDate, offset).toDateString(); }
+  };
+
+  const sessLabel = (m) => (m >= 60 ? `${m / 60 === Math.floor(m / 60) ? m / 60 : (m / 60).toFixed(1)} h${m === 150 ? "+" : ""}` : `${m} min`);
+  const num = (n) => { try { return new Intl.NumberFormat(LOCALES[language] || "en-CA").format(Math.round(n)); } catch { return String(Math.round(n)); } };
+  const stepper = (value, onMinus, onPlus, label, width = 70) => (
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <button style={{ ...styles.stepperButton, width: 34, height: 34 }} onClick={onMinus} aria-label={`${label} −`}>−</button>
+      <span style={{ minWidth: width, textAlign: "center", fontWeight: 700, fontSize: 15 }}>{value}</span>
+      <button style={{ ...styles.stepperButton, width: 34, height: 34 }} onClick={onPlus} aria-label={`${label} +`}>+</button>
+    </div>
+  );
+  const fieldRow = (label, control, note) => (
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, padding: "10px 0", borderTop: `1px solid ${COLORS.line}`, flexWrap: "wrap" }}>
+      <div style={{ fontSize: 13.5, fontWeight: 600 }}>{label}{note && <div style={{ fontSize: 11.5, fontWeight: 400, color: COLORS.inkMuted }}>{note}</div>}</div>
+      {control}
+    </div>
+  );
+
+  // Calories ↔ portion size ↔ servings. Changing one updates the others.
+  const NutritionCard = ({ planObj, answers, onChange }) => {
+    const n = planNutrition(planObj, byId);
+    const share = mealShare(answers.meals);
+    const goal = answers.dailyCal || dailyGoal || 2000;
+    const target = goal * share;
+    const portion = planObj.portion || 1;
+    const gives = n.cal * portion;
+    const diff = gives - target;
+    const ok = target > 0 && Math.abs(diff) <= target * 0.1;
+    const setGoal = (v) => onChange({ dailyCal: Math.max(1000, Math.min(5000, v)), portionMode: "auto" });
+    const setPortion = (v) => { const pv = Math.max(PORTION_MIN, Math.min(PORTION_MAX, v)); onChange({ portion: pv, portionMode: "manual", dailyCal: Math.max(1000, Math.min(5000, roundTo((n.cal * pv) / share, 50))) }); };
+    const source = dailyGoal && goal === dailyGoal ? tr("fromGoals") : !dailyGoal && goal === 2000 ? tr("typical") : null;
+    return (
+      <div style={{ marginTop: 14, background: COLORS.card, border: `1px solid ${COLORS.line}`, borderRadius: 16, padding: "12px 16px" }}>
+        <div style={{ fontWeight: 700, fontSize: 15 }}>🔥 {tr("nutrTitle")}</div>
+        {fieldRow(tr("dailyGoal"), stepper(`${num(goal)} kcal`, () => setGoal(goal - 100), () => setGoal(goal + 100), tr("dailyGoal"), 96), source)}
+        {fieldRow(tr("portion"), stepper(`×${portion.toFixed(2).replace(/0$/, "")}`, () => setPortion(portion - 0.25), () => setPortion(portion + 0.25), tr("portion")))}
+        <div style={{ fontSize: 12.5, color: COLORS.inkMuted, marginTop: 4 }}>{tr("coverShare", { p: Math.round(share * 100), n: num(target) })}</div>
+        <div style={{ fontSize: 14, marginTop: 10 }}>
+          <strong>{tr("planGives", { n: num(gives) })}</strong>
+          {n.max > n.min && <span style={{ color: COLORS.inkMuted, fontSize: 12.5 }}> ({tr("range", { a: num(n.min * portion), b: num(n.max * portion) })})</span>}
+        </div>
+        <div style={{ fontSize: 12.5, color: COLORS.inkMuted, marginTop: 4 }}>{tr("macrosLine", { p: num(n.p * portion), c: num(n.c * portion), f: num(n.f * portion) })}</div>
+        <div style={{ marginTop: 8, fontWeight: 600, fontSize: 13.5, color: ok ? COLORS.primaryText : COLORS.accentText }}>
+          {ok ? `✓ ${tr("onTarget")}` : diff < 0 ? tr("underBy", { n: num(-diff) }) : tr("overBy", { n: num(diff) })}
+        </div>
+        {!ok && planObj.clamp === "hi" && <div style={{ fontSize: 12, color: COLORS.inkMuted, marginTop: 2 }}>{tr("clampHi")}</div>}
+        {!ok && planObj.clamp === "lo" && <div style={{ fontSize: 12, color: COLORS.inkMuted, marginTop: 2 }}>{tr("clampLo")}</div>}
+        <div style={{ fontSize: 11.5, color: COLORS.inkMuted, marginTop: 8 }}>{tr("nutrNote")}</div>
+      </div>
+    );
   };
 
   // ---------- Questionnaire ----------
@@ -457,7 +575,7 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
           <div style={{ ...grid, marginTop: 0, gridTemplateColumns: "repeat(2, 1fr)" }}>
             {SESSION_OPTS.map((m) => (
               <button key={m} onClick={() => setA({ sessionMin: m })} style={numBtn(a.sessionMin === m)} aria-pressed={a.sessionMin === m}>
-                {m >= 60 ? `${m / 60 === Math.floor(m / 60) ? m / 60 : (m / 60).toFixed(1)} h${m === 150 ? "+" : ""}` : `${m} min`}
+                {sessLabel(m)}
               </button>
             ))}
           </div>
@@ -498,6 +616,7 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
 
         {key === "summary" && (<>
           <h1 style={{ ...styles.h1, fontSize: 23, marginTop: 18 }}>{tr("summary")}</h1>
+          {preview && <NutritionCard planObj={preview} answers={a} onChange={(patch) => setA(patch)} />}
           <div style={{ marginTop: 14, background: COLORS.card, border: `1px solid ${COLORS.line}`, borderRadius: 16, padding: "6px 16px" }}>
             {[
               [tr("recipesWeek"), recipesPerWeek],
@@ -555,12 +674,83 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
             </div>
           ))}
         </div>
-        <button data-tour="mealprep-start" onClick={() => { setDraft({ ...DEFAULT_ANSWERS, seed: newSeed() }); setStep(0); }} style={styles.primaryButton}>{tr("start")}</button>
+        <button data-tour="mealprep-start" onClick={() => { setDraft({ ...DEFAULT_ANSWERS, dailyCal: dailyGoal || 2000, seed: newSeed() }); setStep(0); }} style={styles.primaryButton}>{tr("start")}</button>
       </div>
     );
   }
 
   // ---------- The plan ----------
+  // Apply a change to the plan's answers. Structural changes re-pick recipes (same seed, same start
+  // date); amount changes keep the recipes and just recompute portions, servings, groceries and cost.
+  const apply = (patch, repick) => {
+    const na = { ...plan.answers, ...(repick ? { portionMode: "auto" } : {}), ...patch };
+    const next = repick ? { ...buildPlan(na, ctx, plan.seed || 7), startDate: plan.startDate } : finalizePlan({ ...plan, answers: na }, byId);
+    setPlan(next);
+    setWeek((w) => Math.min(w, next.weeks.length - 1));
+  };
+  const AdjustPanel = () => {
+    const a2 = plan.answers;
+    const [budgetText, setBudgetText] = useState(a2.budget || "");
+    const [daysText, setDaysText] = useState(String(a2.days || 10));
+    const chip = (active) => ({ ...styles.equipChip, ...(active ? styles.equipChipActive : {}), padding: "6px 11px", fontSize: 12.5 });
+    return (
+      <div style={{ marginTop: 16, background: COLORS.sageSofter, border: `1px solid ${COLORS.sage}`, borderRadius: 16, padding: "14px 16px" }}>
+        <div style={{ fontWeight: 700, fontSize: 15.5 }}>⚙️ {tr("adjustTitle")}</div>
+        <div style={{ fontSize: 12.5, color: COLORS.inkMuted, marginTop: 2 }}>{tr("adjustSub")}</div>
+        <NutritionCard planObj={plan} answers={a2} onChange={(patch) => apply(patch, false)} />
+        <div style={{ marginTop: 12 }}>
+          {fieldRow(tr("peopleShort"), stepper(a2.people, () => apply({ people: Math.max(1, a2.people - 1) }, false), () => apply({ people: Math.min(12, a2.people + 1) }, false), tr("peopleShort"), 40))}
+          {fieldRow(tr("budget"), (
+            <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+              <span style={{ color: COLORS.inkMuted }}>{money.symbol}</span>
+              <input inputMode="decimal" value={budgetText} placeholder="–" onChange={(e) => setBudgetText(e.target.value.replace(/[^0-9.,]/g, ""))}
+                onBlur={() => budgetText !== (a2.budget || "") && apply({ budget: budgetText }, true)}
+                onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); }}
+                style={{ ...styles.textInput, width: 90, flex: "none", padding: "8px 10px" }} aria-label={tr("budget")} />
+              <select value={a2.budgetPer} onChange={(e) => apply({ budgetPer: e.target.value, budget: budgetText }, true)} style={{ ...styles.selectInput, width: "auto", padding: "8px 10px" }}>
+                <option value="week">{tr("perWeek")}</option><option value="plan">{tr("perPlan")}</option>
+              </select>
+            </div>
+          ))}
+        </div>
+        <div style={{ ...styles.sectionLabel, marginTop: 14, marginBottom: 2 }}>{tr("repickNote")}</div>
+        {fieldRow(tr("mealsShort"), (
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            {ui.MEAL_TIMES.map((m) => {
+              const on = a2.meals.includes(m.id);
+              return <button key={m.id} aria-pressed={on} style={chip(on)} onClick={() => { const meals = on ? a2.meals.filter((x) => x !== m.id) : [...a2.meals, m.id]; if (meals.length) apply({ meals }, true); }}>{m.emoji} {mealLabel(m.id)}</button>;
+            })}
+          </div>
+        ))}
+        {fieldRow(tr("cooksShort"), stepper(a2.sessions, () => apply({ sessions: Math.max(1, a2.sessions - 1) }, true), () => apply({ sessions: Math.min(7, a2.sessions + 1) }, true), tr("cooksShort"), 40))}
+        {fieldRow(tr("sessionShort"), (
+          <select value={a2.sessionMin} onChange={(e) => apply({ sessionMin: Number(e.target.value) }, true)} style={{ ...styles.selectInput, width: "auto", padding: "8px 10px" }}>
+            {SESSION_OPTS.map((m) => <option key={m} value={m}>{sessLabel(m)}</option>)}
+          </select>
+        ))}
+        {fieldRow(tr("lengthShort"), (
+          <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
+            <select value={a2.length} onChange={(e) => apply({ length: e.target.value, days: daysText }, true)} style={{ ...styles.selectInput, width: "auto", padding: "8px 10px" }}>
+              {LENGTHS.map((l) => <option key={l.id} value={l.id}>{tr(l.key)}</option>)}
+            </select>
+            {a2.length === "custom" && (
+              <input type="number" min={3} max={31} value={daysText} onChange={(e) => setDaysText(e.target.value)}
+                onBlur={() => apply({ days: daysText }, true)} onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); }}
+                style={{ ...styles.textInput, width: 70, flex: "none", padding: "8px 10px" }} aria-label={tr("daysLabel")} />
+            )}
+          </div>
+        ))}
+        {fieldRow(tr("prefsShort"), (
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "flex-end" }}>
+            {MP_PREFS.map((pf) => {
+              const on = a2.prefs.includes(pf.id);
+              return <button key={pf.id} aria-pressed={on} style={chip(on)} onClick={() => apply({ prefs: on ? a2.prefs.filter((x) => x !== pf.id) : [...a2.prefs, pf.id] }, true)}>{pf.emoji} {L(pf.label)}</button>;
+            })}
+          </div>
+        ))}
+      </div>
+    );
+  };
   const wk = plan.weeks[Math.min(week, plan.weeks.length - 1)];
   const days = planDays(plan.answers);
   const all = groceriesFor(plan.weeks, ctx);
@@ -570,6 +760,7 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
   const toBuy = thisWeek.items.filter((i) => !i.owned);
   const have = thisWeek.items.filter((i) => i.owned);
   const wStart = Math.min(week, plan.weeks.length - 1) * 7;
+  const dayNutr = planNutrition(plan, byId);
   const wLen = Math.min(7, days - wStart);
   const endOffset = days - 1;
 
@@ -583,6 +774,8 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
         <button style={styles.linkButton} onClick={() => setPlan(buildPlan(plan.answers, ctx, newSeed()))}>{tr("remake")}</button>
         <button style={{ ...styles.linkButton, color: COLORS.accentText }} onClick={() => setPlan(null)}>{tr("remove")}</button>
       </div>
+
+      <AdjustPanel />
 
       <div style={{ marginTop: 16, background: COLORS.card, border: `1px solid ${COLORS.line}`, borderRadius: 16, padding: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
@@ -655,7 +848,7 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
           const s = wk.sessions.find((x) => day >= x.start && day < x.start + x.len);
           return (
             <div key={d} style={{ display: "flex", gap: 10, padding: "9px 12px", borderTop: d ? `1px solid ${COLORS.line}` : "none", alignItems: "flex-start" }}>
-              <div style={{ width: 84, flexShrink: 0, fontSize: 12.5, fontWeight: 600 }}>{fmtDay(day)}</div>
+              <div style={{ width: 84, flexShrink: 0, fontSize: 12.5, fontWeight: 600 }}>{fmtDay(day)}<div style={{ fontWeight: 400, fontSize: 11.5, color: COLORS.inkMuted }}>~{num((dayNutr.perDay[day]?.cal || 0) * (plan.portion || 1))} kcal</div></div>
               <div style={{ flex: 1, minWidth: 0, display: "grid", gap: 3 }}>
                 {s && s.items.map((it, ii) => {
                   const r = byId(it.recipeId);
