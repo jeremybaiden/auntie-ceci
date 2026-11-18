@@ -31,6 +31,7 @@ import {
   MessageSquare,
   Target,
   Compass,
+  CalendarDays,
 } from "./lucide-shim.js";
 import { ACTIVITY as NUTRI_ACTIVITY, GOALS as NUTRI_GOALS, SEXES as NUTRI_SEXES, estimateGoals, bodyFromProfile, SOURCES as NUTRI_SOURCES } from "./nutrition.js";
 import { NUTRI_TR } from "./nutrition-tr.js";
@@ -41,6 +42,7 @@ import { pickRecipeIds } from "./photos.jsx";
 import { LOGO_256, LOGO_HEADER, COPYRIGHT } from "./brand.js";
 import { convertUnits } from "./units.js";
 import { ALLERGENS, allergensFor, isBuiltInAllergen } from "./allergens.js";
+import { MealPrepScreen, MealPrepHomeCard, MP } from "./mealprep.jsx";
 
 const AllergyContext = createContext([]);
 // Saved daily nutrition goals (optional), so recipe screens can show "x% of your day".
@@ -7223,6 +7225,9 @@ export default function App() {
   const [shopCountry, setShopCountry] = useState("ca");
   const [customStores, setCustomStores] = useState([]);
   const [shoppingInput, setShoppingInput] = useState("");
+  // Optional meal prep plan (null until the cook builds one) and unfinished questionnaire answers.
+  const [mealPlan, setMealPlan] = useState(null);
+  const [mealDraft, setMealDraft] = useState(null);
   const community = useCommunity();
   const [storageLoaded, setStorageLoaded] = useState(false);
   const [storageError, setStorageError] = useState(false);
@@ -7243,11 +7248,12 @@ export default function App() {
           return null;
         }
       };
-      const [profileData, kitchenData, recipeData, shoppingData] = await Promise.all([
+      const [profileData, kitchenData, recipeData, shoppingData, mealPrepData] = await Promise.all([
         safeGet("auntie_profile"),
         safeGet("auntie_kitchen"),
         safeGet("auntie_recipes"),
         safeGet("auntie_shopping"),
+        safeGet("auntie_mealprep"),
       ]);
       if (cancelled) return;
       if (profileData) {
@@ -7275,6 +7281,7 @@ export default function App() {
       if (shoppingData?.shoppingList) setShoppingList(shoppingData.shoppingList);
       if (shoppingData?.shopCountry && STORES_INGREDIENTS_BY_COUNTRY[shoppingData.shopCountry]) setShopCountry(shoppingData.shopCountry);
       if (Array.isArray(shoppingData?.customStores)) setCustomStores(shoppingData.customStores.slice(0, 12));
+      if (mealPrepData && mealPrepData.plan && Array.isArray(mealPrepData.plan.weeks)) setMealPlan(mealPrepData.plan);
       setStorageLoaded(true);
     }
     loadPersisted().catch(() => {
@@ -7298,6 +7305,11 @@ export default function App() {
     if (!storageLoaded) return;
     window.storage.set("auntie_kitchen", JSON.stringify({ ingredients, equipment, equipmentList, basics })).catch(() => {});
   }, [storageLoaded, ingredients, equipment, equipmentList, basics]);
+
+  useEffect(() => {
+    if (!storageLoaded) return;
+    window.storage.set("auntie_mealprep", JSON.stringify({ plan: mealPlan })).catch(() => {});
+  }, [storageLoaded, mealPlan]);
 
   useEffect(() => {
     if (!storageLoaded) return;
@@ -7398,6 +7410,26 @@ export default function App() {
     setFavorites((prev) => ({ ...prev, [id]: { ...prev[id], note } }));
   }
 
+  // Is this ingredient already in the kitchen (or a basic the cook keeps on hand)?
+  function ownsIngredient(name) {
+    if (isOil(name)) return !!basics.oil || ingredients.some((i) => isOil(i.name));
+    if (BASIC_IDS.includes(name)) return !!basics[name];
+    const n = normalizeIngredient(name);
+    return ingredients.some((i) => normalizeIngredient(i.name) === n);
+  }
+
+  // Add several ingredients at once (from a meal prep grocery list), skipping ones already listed.
+  function addManyShoppingItems(names) {
+    setShoppingList((prev) => {
+      const next = [...prev];
+      for (const raw of names) {
+        const val = resolveIngredientCanonical(String(raw).toLowerCase()) || String(raw).toLowerCase();
+        if (val && !next.some((s) => normalizeIngredient(s.name) === normalizeIngredient(val))) next.push({ id: `${val}-${Date.now()}-${next.length}`, name: val, checked: false });
+      }
+      return next;
+    });
+  }
+
   function addShoppingItem(name) {
     const typed = name.trim().toLowerCase();
     const val = resolveIngredientCanonical(typed) || typed;
@@ -7455,10 +7487,10 @@ export default function App() {
     setHistory((prev) => prev.map((h) => (h.uid === uid ? { ...h, note } : h)));
   }
 
-  function startGuided(recipe) {
+  function startGuided(recipe, startServings = 2) {
     setActiveRecipe(recipe);
     setStepIndex(0);
-    setServings(2);
+    setServings(Math.max(1, Math.min(24, startServings || 2)));
     setScreen("guided");
     tourEmit("recipe");
   }
@@ -7697,6 +7729,7 @@ export default function App() {
               onOpenRecipe={startGuided}
               onGoCook={() => setScreen("cook")}
               onGoKitchen={() => setScreen("kitchen")}
+              mealPrepCard={<MealPrepHomeCard ui={MEALPREP_UI} hasPlan={!!mealPlan} onOpen={() => { setPrevScreen("home"); setScreen("mealprep"); }} />}
             />
           )}
           {screen === "kitchen" && (
@@ -7757,7 +7790,7 @@ export default function App() {
               onPrev={prevStep}
               servings={servings}
               setServings={setServings}
-              onBack={() => { setScreen("cook"); setActiveRecipe(null); }}
+              onBack={() => { setScreen(prevScreen === "mealprep" ? "mealprep" : "cook"); setActiveRecipe(null); }}
               units={appearance.units}
               allergies={profile.allergies || []}
             />
@@ -7827,6 +7860,23 @@ export default function App() {
               customStores={customStores}
               setCustomStores={setCustomStores}
               onBack={() => setScreen(prevScreen)}
+            />
+          )}
+          {screen === "mealprep" && (
+            <MealPrepScreen
+              ui={MEALPREP_UI}
+              plan={mealPlan}
+              setPlan={setMealPlan}
+              draft={mealDraft}
+              setDraft={setMealDraft}
+              recipes={allRecipes}
+              matchInfo={matchInfo}
+              allergiesFor={(r) => allergensFor(r, profile.allergies || [])}
+              owned={ownsIngredient}
+              country={shopCountry}
+              onCook={(r, n) => { setPrevScreen("mealprep"); startGuided(r, n); }}
+              onAddToShopping={addManyShoppingItems}
+              onBack={() => setScreen(["home", "more"].includes(prevScreen) ? prevScreen : "more")}
             />
           )}
           {screen === "feedback" && (
@@ -9000,7 +9050,7 @@ function GuidedScreen({ recipe, stepIndex, onNext, onPrev, servings, setServings
         <div style={styles.stepperRow}>
           <button onClick={() => setServings((s) => Math.max(1, s - 1))} aria-label={t("aFewerServings")} style={styles.stepperButton}>−</button>
           <span style={styles.targetValue} aria-live="polite">{servings}</span>
-          <button onClick={() => setServings((s) => Math.min(12, s + 1))} aria-label={t("aMoreServings")} style={styles.stepperButton}>+</button>
+          <button onClick={() => setServings((s) => Math.min(24, s + 1))} aria-label={t("aMoreServings")} style={styles.stepperButton}>+</button>
         </div>
       </div>
 
@@ -9452,7 +9502,7 @@ function HistoryScreen({ recipes, history, onRate, onNote, onBack }) {
   );
 }
 
-function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, history, favorites, toggleFavorite, onOpenRecipe, onGoCook, onGoKitchen }) {
+function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, history, favorites, toggleFavorite, onOpenRecipe, onGoCook, onGoKitchen, mealPrepCard }) {
   const { t, language } = useContext(LanguageContext);
   const [tip] = useState(() => BEGINNER_TIPS[Math.floor(Math.random() * BEGINNER_TIPS.length)]);
   const ready = recipes.map((r) => ({ recipe: r, info: matchInfo(r) })).filter((x) => x.info.makeable).slice(0, 3);
@@ -9483,6 +9533,8 @@ function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, histo
         <div style={{ ...styles.milestoneValue, marginTop: 4 }}>{tip}</div>
       </div>
 
+      {mealPrepCard}
+
       <div style={{ ...styles.sectionLabel, marginTop: 22 }}>{t("recommendedForYou")}</div>
       {ready.length === 0 && <span style={styles.emptyText}>Add a bit more to My Kitchen and recommendations will show up here.</span>}
       <div>{ready.map(({ recipe, info }) => <RecipeCard key={recipe.id} recipe={recipe} info={info} onOpen={onOpenRecipe} favorites={favorites} toggleFavorite={toggleFavorite} />)}</div>
@@ -9511,6 +9563,7 @@ function MoreScreen({ onOpen, onOpenSettings, favoritesCount, shoppingCount, rec
     { icon: BookOpen, label: t("cookbookLabel"), sub: favoritesCount > 0 ? `${favoritesCount} ${pl(favoritesCount, PL.savedRecipe, language)}` : t("cookbookSub"), action: () => onOpen("cookbook") },
     { icon: Users, label: t("communityLabel"), sub: t("communitySub"), action: () => onOpen("community") },
     { icon: ShoppingCart, label: t("shoppingLabel"), sub: shoppingCount > 0 ? `${shoppingCount} ${pl(shoppingCount, PL.listItem, language)}` : t("shoppingSub"), action: () => onOpen("shopping") },
+    { icon: CalendarDays, label: MP.title[language] || MP.title.en, sub: MP.moreSub[language] || MP.moreSub.en, action: () => onOpen("mealprep"), tour: "more-mealprep" },
     { icon: Target, label: nt("navLabel", language), sub: nt("navSub", language), action: () => onOpen("nutrition") },
     { icon: Compass, label: TOUR_UI.label[language] || TOUR_UI.label.en, sub: TOUR_UI.sub[language] || TOUR_UI.sub.en, action: () => onOpen("tour") },
     { icon: BookOpen, label: t("glossaryLabel"), sub: t("glossarySub"), action: () => onOpen("glossary") },
@@ -9523,7 +9576,7 @@ function MoreScreen({ onOpen, onOpenSettings, favoritesCount, shoppingCount, rec
       <p style={styles.subtext}>{t("moreSubtitle")}</p>
       <div className="ms-more-grid" style={{ marginTop: 16 }}>
         {rows.map((r) => (
-          <button key={r.label} onClick={r.action} style={styles.moreRow}>
+          <button key={r.label} onClick={r.action} style={styles.moreRow} data-tour={r.tour}>
             <div style={styles.moreRowIcon}><r.icon size={17} color={COLORS.primaryText} /></div>
             <div style={{ flex: 1, minWidth: 0, textAlign: "start" }}>
               <div style={styles.recipeName}>{r.label}</div>
@@ -10681,4 +10734,17 @@ const styles = {
   liveCheckRetry: { fontSize: 12, fontWeight: 600, color: COLORS.accentText, background: "none", border: "none", padding: 0, marginInlineStart: 4, cursor: "pointer", textDecoration: "underline" },
   glossaryMacros: { display: "flex", flexWrap: "wrap", gap: 4, justifyContent: "flex-end", maxWidth: 160 },
   shoppingCheck: { width: 26, height: 26, borderRadius: 7, border: `1px solid ${COLORS.line}`, background: COLORS.card, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0 },
+};
+
+// What the meal prep screen borrows from the rest of the app.
+const MEALPREP_UI = {
+  get styles() { return styles; },
+  COLORS,
+  LanguageContext,
+  RecipeImage,
+  recipeName,
+  ingredientLabel: (name, language) => ingredientLabel(name, language),
+  mealLabel: (id, lang) => (MEAL_TIMES_TR[id] && (MEAL_TIMES_TR[id][lang] || MEAL_TIMES_TR[id].en)) || id,
+  MEAL_TIMES,
+  ArrowLeft, Check, RotateCcw, ShoppingCart,
 };

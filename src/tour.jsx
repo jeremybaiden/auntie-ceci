@@ -136,6 +136,18 @@ export const TOUR_STEPS = [
       "يحفظ السجل والتقدم تقييماتك وملاحظاتك وشاراتك. يعرض التسوق الذكي ما تشتريه لاحقًا ويربطك بمتاجر قريبة. في المجتمع نصائح ودروس من طهاة آخرين. الأهداف الغذائية اختيارية. وفي الإعدادات (الترس في الأعلى) الحساسية واللغة والوحدات والوضع الداكن وحجم النص."),
   },
   {
+    id: "mealprep", screen: "mealprep", emoji: "🍱", target: '[data-tour="mealprep-start"]', optional: true,
+    title: S("Meal prep (optional)", "Preparación de comidas (opcional)", "Préparation des repas (facultatif)", "Marmitas (opcional)", "मील प्रेप (वैकल्पिक)", "备餐计划（可选）", "تحضير الوجبات (اختياري)"),
+    body: S(
+      "Want to plan ahead? Answer a few quick questions (budget, how many people, which meals, how often and how long you can cook) and get cook days, leftovers by day and a grocery list. You never have to use it. Find it in More or on Home.",
+      "¿Quieres planificar? Responde unas preguntas rápidas (presupuesto, personas, comidas, cada cuánto y cuánto tiempo puedes cocinar) y obtén días de cocina, sobras por día y una lista de compras. Nunca es obligatorio. Está en Más o en Inicio.",
+      "Envie d'anticiper ? Répondez à quelques questions (budget, nombre de personnes, repas, fréquence et durée de cuisine) et obtenez jours de cuisine, restes par jour et liste de courses. Jamais obligatoire. C'est dans Plus ou sur l'Accueil.",
+      "Quer se planejar? Responda algumas perguntas rápidas (orçamento, pessoas, refeições, com que frequência e por quanto tempo pode cozinhar) e receba dias de cozinhar, sobras por dia e uma lista de compras. Nunca é obrigatório. Fica em Mais ou no Início.",
+      "पहले से प्लान करना है? कुछ आसान सवालों के जवाब दें (बजट, कितने लोग, कौन-से खाने, कितनी बार और कितनी देर बना सकते हैं) और पाएं बनाने के दिन, रोज़ का बचा खाना और किराना सूची। इसे इस्तेमाल करना ज़रूरी नहीं। यह More या Home पर मिलेगा।",
+      "想提前规划？回答几个简单问题（预算、人数、哪几餐、多久做一次、每次多长时间），就能得到做饭日、每天的剩菜安排和采购清单。完全可选。在“更多”或首页都能找到。",
+      "تريد التخطيط مسبقًا؟ أجب عن بضعة أسئلة سريعة (الميزانية، عدد الأشخاص، الوجبات، كم مرة ولأي مدة يمكنك الطبخ) واحصل على أيام الطبخ والبقايا لكل يوم وقائمة مشتريات. ليس إلزاميًا أبدًا. تجده في المزيد أو الرئيسية."),
+  },
+  {
     id: "done", screen: "kitchen", emoji: "🎉",
     title: S("You're ready!", "¡Listo!", "C'est parti !", "Tudo pronto!", "आप तैयार हैं!", "准备好了！", "أنت جاهز!"),
     body: S("That's the whole loop: add what you have, pick a meal, cook it step by step. Replay this tour anytime from More → App tour, and use More → Feedback to tell us what to fix or add.", "Ese es todo el ciclo: añade lo que tienes, elige una comida y cocínala paso a paso. Repite este recorrido desde Más → Recorrido por la app, y usa Más → Comentarios para decirnos qué mejorar.", "Voilà le principe : ajoutez ce que vous avez, choisissez un plat, cuisinez-le pas à pas. Revoyez cette visite via Plus → Visite de l'app, et dites-nous quoi améliorer via Plus → Commentaires.", "Esse é o ciclo todo: adicione o que tem, escolha uma refeição e cozinhe passo a passo. Reveja este tour em Mais → Tour pelo app e use Mais → Feedback para dizer o que melhorar.", "यही पूरा तरीका है: जो है वह जोड़ें, खाना चुनें, कदम-दर-कदम बनाएं। यह टूर कभी भी More → ऐप टूर से दोबारा देखें, और More → फ़ीडबैक से बताएं क्या सुधारें।", "这就是完整流程：添加你有的，挑一道菜，一步步做出来。随时可在“更多 → 应用导览”重看，也可在“更多 → 反馈”告诉我们要改进什么。", "هذه هي الدورة كاملة: أضف ما لديك، اختر وجبة، واطبخها خطوة بخطوة. أعد الجولة في أي وقت من المزيد ← جولة في التطبيق، واستخدم المزيد ← الملاحظات لتخبرنا بما يجب تحسينه."),

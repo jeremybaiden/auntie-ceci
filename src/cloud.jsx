@@ -26,7 +26,7 @@ export const SUPABASE_ANON_KEY =
 export const APPLE_SIGN_IN_ENABLED = false;
 
 const GUEST_FLAG = "auntiececi:guest";
-const APP_KEYS = ["auntie_profile", "auntie_kitchen", "auntie_recipes", "auntie_shopping"];
+const APP_KEYS = ["auntie_profile", "auntie_kitchen", "auntie_recipes", "auntie_shopping", "auntie_mealprep"];
 const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
 const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch { /* blocked */ } };
 const lsDel = (k) => { try { localStorage.removeItem(k); } catch { /* blocked */ } };
@@ -78,6 +78,12 @@ const INTRO = [
     meals: true,
     title: { en: "Step by step, no guessing", es: "Paso a paso, sin adivinar", fr: "Étape par étape, sans deviner", pt: "Passo a passo, sem adivinhar", hi: "कदम-दर-कदम, बिना अंदाज़े के", zh: "一步一步，不用猜", ar: "خطوة بخطوة، بلا تخمين" },
     body: { en: "Every step tells you how much, how long, and what it should look like when it's done. Change the servings and the amounts update.", es: "Cada paso te dice cuánto, cuánto tiempo y cómo debe verse cuando está listo. Cambia las porciones y las cantidades se ajustan.", fr: "Chaque étape indique combien, combien de temps, et à quoi cela doit ressembler une fois prêt. Changez les portions, les quantités s'adaptent.", pt: "Cada passo diz quanto, por quanto tempo e como deve ficar quando estiver pronto. Mude as porções e as quantidades se ajustam.", hi: "हर कदम बताता है कितना, कितनी देर, और तैयार होने पर कैसा दिखना चाहिए। सर्विंग बदलें तो मात्रा अपने आप बदल जाती है।", zh: "每一步都告诉你用量、时间，以及做好时应该是什么样子。修改份数，用量会自动调整。", ar: "كل خطوة تخبرك بالكمية والمدة وكيف يجب أن يبدو الطبق عند اكتماله. غيّر عدد الحصص وتتغير الكميات." },
+  },
+  {
+    emoji: "🍱",
+    meals: true,
+    title: { en: "Plan ahead, if you want", es: "Planifica, si quieres", fr: "Anticipez, si vous voulez", pt: "Planeje, se quiser", hi: "चाहें तो पहले से प्लान करें", zh: "想的话，可以提前规划", ar: "خطّط مسبقًا إن أردت" },
+    body: { en: "Optional meal prep: tell Auntie Ceci your budget, how often you can cook and for how long, and she plans your week or month with cook days, leftovers and a grocery list.", es: "Preparación de comidas opcional: dile a Auntie Ceci tu presupuesto, cada cuánto puedes cocinar y por cuánto tiempo, y ella planifica tu semana o mes con días de cocina, sobras y lista de compras.", fr: "Préparation des repas facultative : indiquez à Auntie Ceci votre budget, à quelle fréquence et combien de temps vous pouvez cuisiner, et elle planifie votre semaine ou votre mois avec jours de cuisine, restes et liste de courses.", pt: "Marmitas opcionais: diga à Auntie Ceci seu orçamento, com que frequência e por quanto tempo você pode cozinhar, e ela planeja sua semana ou mês com dias de cozinhar, sobras e lista de compras.", hi: "वैकल्पिक मील प्रेप: Auntie Ceci को अपना बजट बताएं, कितनी बार और कितनी देर खाना बना सकते हैं, और वह आपका हफ़्ता या महीना प्लान करेगी: बनाने के दिन, बचा खाना और किराना सूची।", zh: "可选的备餐计划：告诉 Auntie Ceci 你的预算、多久做一次饭、每次多长时间，她会为你规划一周或一个月的做饭日、剩菜安排和采购清单。", ar: "تحضير وجبات اختياري: أخبر Auntie Ceci بميزانيتك وكم مرة يمكنك الطبخ ولأي مدة، وستخطط لأسبوعك أو شهرك بأيام الطبخ والبقايا وقائمة المشتريات." },
   },
   {
     emoji: "💬",
