@@ -42,7 +42,7 @@ import { pickRecipeIds } from "./photos.jsx";
 import { LOGO_256, LOGO_HEADER, COPYRIGHT } from "./brand.js";
 import { convertUnits } from "./units.js";
 import { ALLERGENS, allergensFor, isBuiltInAllergen } from "./allergens.js";
-import { MealPrepScreen, MealPrepHomeCard, MP } from "./mealprep.jsx";
+import { MealPrepScreen, MealPrepHomeCard, MP, FoodCarousel } from "./mealprep.jsx";
 
 const AllergyContext = createContext([]);
 // Saved daily nutrition goals (optional), so recipe screens can show "x% of your day".
@@ -77,7 +77,13 @@ for (const [id, langs] of Object.entries({ ...FRUIT_TR_1, ...FRUIT_TR_2, ...FRUI
 const WORLD = build([...AFRICAN, ...BRAZILIAN, ...BRITISH, ...CHINESE]);
 
 const FONT_IMPORT = `[dir="rtl"] .ms-flip { transform: scaleX(-1); }
-.ms-desktop .ms-screen > div { max-width: 1120px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+.ms-desktop .ms-screen > div { max-width: 1200px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+.ms-desktop .ms-screen > div.ms-home { max-width: 1480px; }
+@media (min-width: 1000px) {
+  .ms-desktop .ms-home-grid { display: grid; grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.6fr); gap: 28px; align-items: start; }
+  .ms-desktop .ms-home-main > section { margin-top: 16px !important; }
+  .ms-desktop .ms-home-recs { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important; }
+}
 .ms-desktop div:has(> .ms-recipe-card) { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 12px; }
 .ms-desktop div:has(> .ms-recipe-card) > .ms-recipe-card { margin-bottom: 0 !important; }
 .ms-desktop .ms-more-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; max-width: 980px; }
@@ -276,6 +282,7 @@ const TRANSLATIONS = {
   kitchenSubtitle: { en: "What do you have right now?", es: "¿Qué tienes ahora mismo?", fr: "Qu'avez-vous sous la main ?", pt: "O que você tem agora?", hi: "अभी आपके पास क्या है?", zh: "你现在有什么食材？", ar: "ماذا لديك الآن؟", ru: "Что у вас есть прямо сейчас?", ta: "இப்போது உங்களிடம் என்ன இருக்கிறது?" },
   todaysTarget: { en: "Today's rough goal", es: "Tu objetivo aproximado de hoy", fr: "Votre objectif approximatif du jour", pt: "Sua meta aproximada de hoje", hi: "आज का अनुमानित लक्ष्य", zh: "今日大致目标", ar: "هدفك التقريبي لليوم" },
   readyBadgeLabel: { en: "Ready", es: "Listo", fr: "Prêt", pt: "Pronto", hi: "तैयार", zh: "可以做", ar: "جاهز", ru: "Готово", ta: "தயார்" },
+  homeEmptyRecs: { en: "Add a bit more to My Kitchen and recommendations will show up here.", es: "Añade un poco más a Mi cocina y aquí aparecerán recomendaciones.", fr: "Ajoutez un peu plus dans Ma cuisine et des recommandations apparaîtront ici.", pt: "Adicione um pouco mais em Minha cozinha e as recomendações aparecem aqui.", hi: "My Kitchen में थोड़ा और जोड़ें, सुझाव यहां दिखेंगे।", zh: "在“我的厨房”多加一些食材，推荐就会出现在这里。", ar: "أضف المزيد إلى مطبخي وستظهر التوصيات هنا." },
   missingBadgeLabel: { en: "Missing", es: "Falta", fr: "Manque", pt: "Faltando", hi: "गायब", zh: "缺少", ar: "ناقص", ru: "Не хватает", ta: "இல்லை" },
   missingPrefixLabel: { en: "Missing", es: "Falta", fr: "Manque", pt: "Faltando", hi: "गायब है", zh: "缺少", ar: "ناقص" },
   missingEquipmentPrefix: { en: "Missing tools", es: "Equipo faltante", fr: "Matériel manquant", pt: "Equipamento faltando", hi: "गायब उपकरण", zh: "缺少的厨具", ar: "معدات ناقصة" },
@@ -9507,13 +9514,23 @@ function HistoryScreen({ recipes, history, onRate, onNote, onBack }) {
 function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, history, favorites, toggleFavorite, onOpenRecipe, onGoCook, onGoKitchen, mealPrepCard }) {
   const { t, language } = useContext(LanguageContext);
   const [tip] = useState(() => BEGINNER_TIPS[Math.floor(Math.random() * BEGINNER_TIPS.length)]);
-  const ready = recipes.map((r) => ({ recipe: r, info: matchInfo(r) })).filter((x) => x.info.makeable).slice(0, 3);
+  const allergies = useContext(AllergyContext);
+  const safe = (r) => !allergensFor(r, allergies).length;
+  const scored = recipes.filter(safe).map((r) => ({ recipe: r, info: matchInfo(r) }));
+  const ready = scored.filter((x) => x.info.makeable).slice(0, 3);
+  // Ready-to-cook first, then the ones you're only an item or two away from, so the space is useful.
+  const recommended = [
+    ...scored.filter((x) => x.info.makeable),
+    ...scored.filter((x) => !x.info.makeable && x.info.haveEquip && x.info.missingIngredients.length <= 2).sort((a, b) => a.info.missingIngredients.length - b.info.missingIngredients.length),
+  ].slice(0, 8);
   const equipCount = Object.values(equipment).filter(Boolean).length;
 
   return (
-    <div style={styles.screenPad}>
+    <div style={styles.screenPad} className="ms-home">
       <h1 style={styles.h1}>{profile?.name ? `Hey, ${profile.name}` : t("homeGreetingFallback")}</h1>
       <p style={styles.subtext}>{t("homeSubtitle")}</p>
+      <div className="ms-home-grid">
+      <div className="ms-home-side">
 
       <div style={styles.homeSnapshotRow}>
         <button onClick={onGoKitchen} style={styles.homeSnapshotCard}>
@@ -9537,10 +9554,6 @@ function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, histo
 
       {mealPrepCard}
 
-      <div style={{ ...styles.sectionLabel, marginTop: 22 }}>{t("recommendedForYou")}</div>
-      {ready.length === 0 && <span style={styles.emptyText}>Add a bit more to My Kitchen and recommendations will show up here.</span>}
-      <div>{ready.map(({ recipe, info }) => <RecipeCard key={recipe.id} recipe={recipe} info={info} onOpen={onOpenRecipe} favorites={favorites} toggleFavorite={toggleFavorite} />)}</div>
-
       {history.length > 0 && (
         <>
           <div style={{ ...styles.sectionLabel, marginTop: 20 }}>{t("recentlyCooked")}</div>
@@ -9552,6 +9565,15 @@ function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, histo
           ))}
         </>
       )}
+      </div>
+      <div className="ms-home-main">
+        <FoodCarousel ui={MEALPREP_UI} tr={(k) => (k === "carouselTitle" ? t("getInspired") : (MP[k] && (MP[k][language] || MP[k].en)) || k)} recipes={recipes} minTile={250}
+          answers={{ prefs: [], meals: [] }} allergiesFor={(r) => allergensFor(r, allergies)} mealLabel={(id) => MEALPREP_UI.mealLabel(id, language)} onOpen={onOpenRecipe} />
+      </div>
+      </div>
+      <div className="ms-home-label" style={{ ...styles.sectionLabel, marginTop: 24 }}>{t("recommendedForYou")}</div>
+      {recommended.length === 0 && <span style={styles.emptyText}>{t("homeEmptyRecs")}</span>}
+      <div className="ms-home-recs">{recommended.map(({ recipe, info }) => <RecipeCard key={recipe.id} recipe={recipe} info={info} onOpen={onOpenRecipe} favorites={favorites} toggleFavorite={toggleFavorite} />)}</div>
     </div>
   );
 }
@@ -10602,7 +10624,7 @@ const styles = {
   outer: { position: "relative", width: "100%", minHeight: "100vh", background: COLORS.paper, color: COLORS.ink, display: "flex", justifyContent: "center", alignItems: "flex-start", padding: "28px 12px", fontFamily: "'Inter', sans-serif", boxSizing: "border-box" },
   phone: { width: 390, maxWidth: "100%", height: 780, background: COLORS.card, borderRadius: 28, boxShadow: "0 1px 2px rgba(51,53,47,0.04), 0 20px 40px var(--ms-shadow)", zIndex: 1, border: `1px solid ${COLORS.line}`, overflow: "hidden", display: "flex", flexDirection: "column", position: "relative" },
   statusRow: { padding: "18px 20px 12px", display: "flex", alignItems: "center", gap: 8, borderBottom: `1px solid ${COLORS.line}`, background: COLORS.card, position: "relative", zIndex: 1 },
-  desktopFrame: { width: "100%", maxWidth: 1280, height: "calc(100vh - 40px)", minHeight: 560, borderRadius: 18 },
+  desktopFrame: { width: "100%", maxWidth: 1640, height: "calc(100vh - 40px)", minHeight: 560, borderRadius: 18 },
   tabBarDesktop: { padding: "10px max(24px, calc(50% - 300px)) 14px" },
   desktopNav: { display: "flex", gap: 4, marginInlineEnd: 12 },
   desktopNavBtn: { display: "flex", alignItems: "center", gap: 7, border: "none", background: "transparent", borderRadius: 10, padding: "8px 14px", cursor: "pointer", fontSize: 13.5, fontWeight: 500, color: COLORS.inkMuted, fontFamily: "'Inter', sans-serif" },

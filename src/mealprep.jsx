@@ -995,7 +995,7 @@ function MacroSliders({ ui, tr, num, goals, planned, share, onSet, canReset, onR
 
 // Sliding row of real dishes from the recipe library, shuffled every time it appears and narrowed
 // to the answers so far (diet, meals, allergies). Pauses on hover; still for reduced-motion users.
-function FoodCarousel({ ui, tr, recipes, answers, allergiesFor, mealLabel }) {
+export function FoodCarousel({ ui, tr, recipes, answers, allergiesFor, mealLabel, onOpen, minTile = 170 }) {
   const { COLORS } = ui;
   const { language } = useContext(ui.LanguageContext);
   const wrapRef = useRef(null);
@@ -1017,7 +1017,7 @@ function FoodCarousel({ ui, tr, recipes, answers, allergiesFor, mealLabel }) {
   useEffect(() => {
     const el = wrapRef.current;
     if (!el || typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(() => setVisible(Math.max(2, Math.min(6, Math.floor(el.clientWidth / 170)))));
+    const ro = new ResizeObserver(() => setVisible(Math.max(2, Math.min(6, Math.floor(el.clientWidth / minTile)))));
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
@@ -1047,9 +1047,9 @@ function FoodCarousel({ ui, tr, recipes, answers, allergiesFor, mealLabel }) {
       <div ref={wrapRef} style={{ overflow: "hidden", borderRadius: 14 }} dir="ltr">
         <div style={{ display: "flex", gap, transform: `translateX(calc(-1 * ${idx} * ${step}))`, transition: instant ? "none" : "transform .6s ease" }} onTransitionEnd={onSlid}>
           {loop.map((r, i) => (
-            <div key={`${r.id}-${i}`} style={{ flex: `0 0 calc((100% - ${(visible - 1) * gap}px) / ${visible})`, borderRadius: 14, overflow: "hidden", position: "relative", aspectRatio: "4 / 3",
+            <div key={`${r.id}-${i}`} onClick={onOpen ? () => onOpen(r) : undefined} onKeyDown={onOpen ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(r); } } : undefined} tabIndex={onOpen ? 0 : undefined} style={{ cursor: onOpen ? "pointer" : "default", flex: `0 0 calc((100% - ${(visible - 1) * gap}px) / ${visible})`, borderRadius: 14, overflow: "hidden", position: "relative", aspectRatio: "4 / 3",
               backgroundColor: (r.color && r.color[0]) || "#eee", backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.72)), url(${ui.recipeImageUrl(r)})`, backgroundSize: "cover", backgroundPosition: "center" }}
-              role="img" aria-label={ui.recipeName(r, language)}>
+              role={onOpen ? "button" : "img"} aria-label={ui.recipeName(r, language)}>
               <div style={{ position: "absolute", left: 10, right: 10, bottom: 8, color: "#fff", textAlign: language === "ar" ? "right" : "left" }} dir={language === "ar" ? "rtl" : "ltr"}>
                 <div style={{ fontWeight: 700, fontSize: 13.5, lineHeight: 1.25, textShadow: "0 1px 3px rgba(0,0,0,.5)" }}>{ui.recipeName(r, language)}</div>
                 <div style={{ fontSize: 11.5, opacity: 0.92, marginTop: 2 }}>{(r.mealTime || []).slice(0, 1).map(mealLabel).join("")}{r.time ? ` · ${r.time}` : ""}{calOf(r) ? ` · ${calOf(r)} kcal` : ""}</div>
