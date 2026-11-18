@@ -1,10 +1,10 @@
 // Appearance and accessibility settings: light/dark mode, text size, a more
 // readable font, higher contrast, and reduced motion.
-// Settings live in this browser (localStorage "mysous:appearance") and are
+// Settings live in this browser (localStorage "auntiececi:appearance") and are
 // applied as attributes on <html>, which the stylesheet below reads.
 
 export const APPEARANCE_DEFAULTS = { theme: "system", textSize: "default", readableFont: false, highContrast: false, reduceMotion: false, cookingText: "normal" };
-const KEY = "mysous:appearance";
+const KEY = "auntiececi:appearance";
 
 // Cups and °F in the US (and a few others), metric everywhere else, until the person picks.
 const defaultUnits = () => {

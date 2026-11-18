@@ -100,7 +100,7 @@ html[data-ms-motion="reduce"] .ms-tour-target { animation: none; box-shadow: 0 0
 }
 @media (max-width: 820px) { .ms-desktop .ms-nav { order: 3; width: 100%; overflow-x: auto; margin-inline-end: 0 !important; } }
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Lobster&family=Inter:wght@400;500;600;700&display=swap');
-@keyframes sousTypingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }`;
+@keyframes auntieTypingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }`;
 
 // Palette (Auntie Ceci): warm cream + cocoa brown + kente gold.
 // Fills use the palette exactly; *Text variants are deeper shades of the same
@@ -7173,12 +7173,12 @@ export default function App() {
   const [language, setLanguage] = useState(() => {
     const supported = LANGUAGES.map((l) => l.id);
     let picked = null;
-    try { picked = window.localStorage.getItem("mysous:lang"); } catch { /* storage blocked */ }
+    try { picked = window.localStorage.getItem("auntiececi:lang"); } catch { /* storage blocked */ }
     if (supported.includes(picked)) return picked;
     const nav = (typeof navigator !== "undefined" && (navigator.language || "")).slice(0, 2).toLowerCase();
     return supported.includes(nav) ? nav : "en";
   });
-  useEffect(() => { try { window.localStorage.setItem("mysous:lang", language); } catch { /* storage blocked */ } }, [language]);
+  useEffect(() => { try { window.localStorage.setItem("auntiececi:lang", language); } catch { /* storage blocked */ } }, [language]);
   function t(key) {
     return TRANSLATIONS[key]?.[language] ?? TRANSLATIONS[key]?.en ?? key;
   }
@@ -8115,7 +8115,7 @@ function AppearanceCard({ appearance: a, onChange }) {
 
 function PrivacyCard() {
   const { t } = useContext(LanguageContext);
-  const cloud = typeof window !== "undefined" ? window.mysousCloud : null;
+  const cloud = typeof window !== "undefined" ? window.auntieCeciCloud : null;
   const [step, setStep] = useState("idle"); // idle | confirm | deleting | error
   return (
     <>
@@ -8239,7 +8239,7 @@ function FeedbackScreen({ onBack }) {
 
 function AccountCard() {
   const { t } = useContext(LanguageContext);
-  const cloud = typeof window !== "undefined" ? window.mysousCloud : null;
+  const cloud = typeof window !== "undefined" ? window.auntieCeciCloud : null;
   if (!cloud) return null;
   return (
     <>
@@ -10088,7 +10088,7 @@ const MAX_POSTS_PER_COOK = 200;
 const EMPTY_COOK_DOC = { posts: [], ratings: {}, helpful: {} };
 
 function localCommunityStore() {
-  const KEY = "mysous:community_local";
+  const KEY = "auntiececi:community_local";
   const listeners = new Set();
   const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { return {}; } };
   const snap = () => {
@@ -10134,7 +10134,7 @@ function useCommunity() {
     let cancelled = false;
     let timer = null;
     (async () => {
-      const cloud = typeof window !== "undefined" ? window.mysousCloud : null;
+      const cloud = typeof window !== "undefined" ? window.auntieCeciCloud : null;
       const [db, user, assets] = cloud ? [cloud.db, cloud.user, cloud.assets] : await Promise.all([getCapability("db"), getCapability("user"), getCapability("assets")]);
       if (cancelled) return;
       let store = localCommunityStore();
@@ -10211,7 +10211,7 @@ function useCommunity() {
     if (post && post.videoId && authorId === s.myId && api.current.assets) api.current.assets.delete(post.videoId).catch(() => {});
     if (authorId === s.myId) return mine((d) => { d.posts = d.posts.filter((p) => p.id !== postId); return d; });
     if (s.isAdmin) {
-      if (typeof window !== "undefined" && window.mysousCloud) window.mysousCloud.clearReports(authorId, postId).catch(() => {});
+      if (typeof window !== "undefined" && window.auntieCeciCloud) window.auntieCeciCloud.clearReports(authorId, postId).catch(() => {});
       return writeDoc(authorId, (d) => { d.posts = d.posts.filter((p) => p.id !== postId); return d; });
     }
     return Promise.resolve(false);
@@ -10258,7 +10258,7 @@ function useCommunity() {
   const nameOf = (uid) => (uid === state.myId ? null : (names[uid] && names[uid].name) || "");
   const avatarOf = (uid) => (names[uid] && names[uid].avatarUrl) || null;
 
-  const cloud = typeof window !== "undefined" ? window.mysousCloud : null;
+  const cloud = typeof window !== "undefined" ? window.auntieCeciCloud : null;
   const reportCount = (authorId, postId) => (state.reports || []).filter((r) => r.author_id === authorId && r.post_id === postId).length;
   async function reportPost(authorId, postId) { return cloud ? cloud.report(authorId, postId) : false; }
   const videoSrc = (id) => (cloud ? cloud.videoSrc(id) : /^[0-9a-f]{32}$/i.test(String(id)) ? "/_blob/" + id : null);
@@ -10637,7 +10637,7 @@ const styles = {
   chatBubbleAi: { background: COLORS.paper, border: `1px solid ${COLORS.line}`, color: COLORS.ink, borderBottomLeftRadius: 4 },
   chatBubbleUser: { background: COLORS.primary, color: "#fff", borderBottomRightRadius: 4 },
   typingBubble: { display: "flex", gap: 4, alignItems: "center", padding: "13px 16px" },
-  typingDot: { width: 6, height: 6, borderRadius: "50%", background: COLORS.inkMuted, display: "inline-block", animation: "sousTypingBounce 1.1s infinite ease-in-out" },
+  typingDot: { width: 6, height: 6, borderRadius: "50%", background: COLORS.inkMuted, display: "inline-block", animation: "auntieTypingBounce 1.1s infinite ease-in-out" },
   quickRow: { display: "flex", gap: 6, overflowX: "auto", paddingBottom: 10 },
   quickChip: { flexShrink: 0, padding: "7px 12px", borderRadius: 20, border: `1px solid ${COLORS.line}`, background: COLORS.paper, fontSize: 12, color: COLORS.ink, cursor: "pointer", whiteSpace: "nowrap", fontFamily: "'Inter', sans-serif" },
   historyCard: { background: COLORS.card, border: `1px solid ${COLORS.line}`, borderRadius: 14, padding: "14px 16px", marginBottom: 10 },

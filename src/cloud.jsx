@@ -25,7 +25,7 @@ export const SUPABASE_ANON_KEY =
 // Apple sign-in needs a paid Apple Developer account; switch on once it's set up in Supabase.
 export const APPLE_SIGN_IN_ENABLED = false;
 
-const GUEST_FLAG = "mysous:guest";
+const GUEST_FLAG = "auntiececi:guest";
 const APP_KEYS = ["sous_profile", "sous_kitchen", "sous_recipes", "sous_shopping"];
 const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
 const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch { /* blocked */ } };
@@ -53,10 +53,10 @@ const AUTH_TR = {
 const LANGS = ["en", "es", "fr", "pt", "hi", "zh", "ar"];
 
 export function startingLanguage() {
-  const picked = lsGet("mysous:lang");
+  const picked = lsGet("auntiececi:lang");
   if (LANGS.includes(picked)) return picked;
   try {
-    const p = JSON.parse(lsGet("mysous:sous_profile") || "{}");
+    const p = JSON.parse(lsGet("auntiececi:sous_profile") || "{}");
     const saved = p.language || (p.profile && p.profile.language);
     if (LANGS.includes(saved)) return saved;
   } catch { /* ignore */ }
@@ -117,13 +117,13 @@ export function AuthScreen({ sb, onGuest }) {
   const [lang, setLang] = useState(startingLanguage);
   const t = (k) => { const e = AUTH_TR[k] || VIEW_TR[k] || INTRO_UI[k]; return e[lang] || e.en; };
   // First visit: a short tour of the app, then the "Save your kitchen" choice.
-  const [slide, setSlide] = useState(() => (lsGet("mysous:introSeen") === "1" ? INTRO.length : 0));
+  const [slide, setSlide] = useState(() => (lsGet("auntiececi:introSeen") === "1" ? INTRO.length : 0));
   // A fresh set of four meal photos every time the intro page changes.
   const [meals, setMeals] = useState(() => pickMeals());
   const firstSlide = useRef(true);
   useEffect(() => { if (firstSlide.current) { firstSlide.current = false; return; } setMeals(pickMeals()); }, [slide]);
-  const finishIntro = () => { lsSet("mysous:introSeen", "1"); setSlide(INTRO.length); };
-  const pickLang = (l) => { setLang(l); lsSet("mysous:lang", l); };
+  const finishIntro = () => { lsSet("auntiececi:introSeen", "1"); setSlide(INTRO.length); };
+  const pickLang = (l) => { setLang(l); lsSet("auntiececi:lang", l); };
   const desktop = true; // one responsive layout
   const [providers, setProviders] = useState(null);
   const [busy, setBusy] = useState(null);
@@ -267,7 +267,7 @@ function communityStore(sb, myId) {
           next({ docs: (data || []).map((r) => ({ id: r.user_id, exists: true, data: () => r.data })), metadata: { fromCache: false } });
         };
         load();
-        window.__mysousRefreshCommunity = load;
+        window.__auntieCeciRefreshCommunity = load;
         const channel = sb.channel("community").on("postgres_changes", { event: "*", schema: "public", table: "community_docs" }, () => load()).subscribe();
         const poll = setInterval(load, 60000);
         const onVisible = () => { if (document.visibilityState === "visible") load(); };
@@ -281,7 +281,7 @@ function communityStore(sb, myId) {
             ? await sb.from("community_docs").upsert({ user_id: id, data })
             : await sb.from("community_docs").update({ data }).eq("user_id", id);
           if (error) throw deny(error);
-          if (window.__mysousRefreshCommunity) window.__mysousRefreshCommunity();
+          if (window.__auntieCeciRefreshCommunity) window.__auntieCeciRefreshCommunity();
         },
       }),
     }),
@@ -311,12 +311,12 @@ export async function startCloud() {
     if (!error) for (const r of rows || []) cache[r.key] = JSON.stringify(r.value);
     const toUpload = [];
     for (const k of APP_KEYS) {
-      const local = lsGet("mysous:" + k);
+      const local = lsGet("auntiececi:" + k);
       if (cache[k] == null && local != null) { cache[k] = local; try { toUpload.push({ user_id: myId, key: k, value: JSON.parse(local) }); } catch { /* skip bad data */ } }
     }
     if (!error && toUpload.length) {
       const { error: upErr } = await sb.from("user_store").upsert(toUpload);
-      if (!upErr) for (const k of APP_KEYS) lsDel("mysous:" + k); // now saved to the account
+      if (!upErr) for (const k of APP_KEYS) lsDel("auntiececi:" + k); // now saved to the account
     }
     const timers = {};
     let lastName = null;
@@ -357,7 +357,7 @@ export async function startCloud() {
         const { error } = await sb.rpc("delete_my_account");
         if (error) return false;
         await sb.auth.signOut();
-        for (const k of APP_KEYS) lsDel("mysous:" + k);
+        for (const k of APP_KEYS) lsDel("auntiececi:" + k);
         lsDel(GUEST_FLAG);
         window.location.reload();
         return true;

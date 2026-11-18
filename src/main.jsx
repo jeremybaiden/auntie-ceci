@@ -1,4 +1,5 @@
 /*! Auntie Ceci © 2026 Jeremy Baiden. All rights reserved. Unauthorized copying, modification or distribution of this code, design, logo or content is prohibited. */
+import "./migrate.js";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
@@ -12,9 +13,9 @@ window.React = React;
 function localStorageBackend() {
   const ls = () => { try { return window.localStorage; } catch { return null; } };
   return {
-    get: async (k) => { const s = ls(); const v = s ? s.getItem("mysous:" + k) : null; if (v == null) throw new Error("missing"); return { key: k, value: v }; },
-    set: async (k, v) => { const s = ls(); if (s) s.setItem("mysous:" + k, v); return { key: k, value: v }; },
-    delete: async (k) => { const s = ls(); if (s) s.removeItem("mysous:" + k); return { key: k, deleted: true }; },
+    get: async (k) => { const s = ls(); const v = s ? s.getItem("auntiececi:" + k) : null; if (v == null) throw new Error("missing"); return { key: k, value: v }; },
+    set: async (k, v) => { const s = ls(); if (s) s.setItem("auntiececi:" + k, v); return { key: k, value: v }; },
+    delete: async (k) => { const s = ls(); if (s) s.removeItem("auntiececi:" + k); return { key: k, deleted: true }; },
     list: async () => ({ keys: [] }),
   };
 }
@@ -32,7 +33,7 @@ const showApp = () => root.render(React.createElement(App));
     return;
   }
 
-  window.mysousCloud = cloud;
+  window.auntieCeciCloud = cloud;
   if (cloud.signedIn) {
     window.storage = cloud.storage;
     showApp();
