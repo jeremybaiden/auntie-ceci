@@ -1000,6 +1000,8 @@ export function FoodCarousel({ ui, tr, recipes, answers, allergiesFor, mealLabel
   const { language } = useContext(ui.LanguageContext);
   const wrapRef = useRef(null);
   const [visible, setVisible] = useState(3);
+  const [wrapW, setWrapW] = useState(0);
+  const [frac, setFrac] = useState(0);
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
   const [instant, setInstant] = useState(false);
@@ -1017,7 +1019,7 @@ export function FoodCarousel({ ui, tr, recipes, answers, allergiesFor, mealLabel
   useEffect(() => {
     const el = wrapRef.current;
     if (!el || typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(() => setVisible(Math.max(2, Math.min(6, Math.floor(el.clientWidth / minTile)))));
+    const ro = new ResizeObserver(() => { setWrapW(el.clientWidth); const l = el.getBoundingClientRect().left; setFrac(l - Math.floor(l)); setVisible(Math.max(2, Math.min(6, Math.floor(el.clientWidth / minTile)))); });
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
@@ -1033,7 +1035,10 @@ export function FoodCarousel({ ui, tr, recipes, answers, allergiesFor, mealLabel
   if (list.length < 2) return null;
   const loop = [...list, ...list.slice(0, visible)];
   const gap = 10;
-  const step = `calc((100% - ${(visible - 1) * gap}px) / ${visible} + ${gap}px)`;
+  // Whole-pixel tiles and steps: sliding by a fraction of a pixel leaves every photo and caption blurry.
+  const tileW = wrapW ? Math.floor((wrapW - (visible - 1) * gap) / visible) : 0;
+  const tileFlex = tileW ? `0 0 ${tileW}px` : `0 0 calc((100% - ${(visible - 1) * gap}px) / ${visible})`;
+  const step = tileW ? `${tileW + gap}px` : `calc((100% - ${(visible - 1) * gap}px) / ${visible} + ${gap}px)`;
   const arrow = { width: 30, height: 30, borderRadius: 15, border: `1px solid ${COLORS.line}`, background: COLORS.card, color: COLORS.ink, cursor: "pointer", fontSize: 15, lineHeight: 1 };
   return (
     <section style={{ marginTop: 28 }} aria-label={tr("carouselTitle")} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
@@ -1045,10 +1050,10 @@ export function FoodCarousel({ ui, tr, recipes, answers, allergiesFor, mealLabel
         </div>
       </div>
       <div ref={wrapRef} style={{ overflow: "hidden", borderRadius: 14 }} dir="ltr">
-        <div style={{ display: "flex", gap, transform: `translateX(calc(-1 * ${idx} * ${step}))`, transition: instant ? "none" : "transform .6s ease" }} onTransitionEnd={onSlid}>
+        <div style={{ display: "flex", gap, transform: tileW ? `translateX(${-idx * (tileW + gap) - frac}px)` : `translateX(calc(-1 * ${idx} * ${step}))`, transition: instant ? "none" : "transform .6s ease" }} onTransitionEnd={onSlid}>
           {loop.map((r, i) => (
-            <div key={`${r.id}-${i}`} onClick={onOpen ? () => onOpen(r) : undefined} onKeyDown={onOpen ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(r); } } : undefined} tabIndex={onOpen ? 0 : undefined} style={{ cursor: onOpen ? "pointer" : "default", flex: `0 0 calc((100% - ${(visible - 1) * gap}px) / ${visible})`, borderRadius: 14, overflow: "hidden", position: "relative", aspectRatio: "4 / 3",
-              backgroundColor: (r.color && r.color[0]) || "#eee", backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.72)), url(${ui.recipeImageUrl(r)})`, backgroundSize: "cover", backgroundPosition: "center" }}
+            <div key={`${r.id}-${i}`} onClick={onOpen ? () => onOpen(r) : undefined} onKeyDown={onOpen ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(r); } } : undefined} tabIndex={onOpen ? 0 : undefined} style={{ cursor: onOpen ? "pointer" : "default", flex: tileFlex, height: tileW ? Math.round((tileW * 3) / 4) : undefined, borderRadius: 14, overflow: "hidden", position: "relative", aspectRatio: "4 / 3",
+              backgroundColor: (r.color && r.color[0]) || "#eee", backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,.62)), url(${ui.recipeImageUrl(r)})`, backgroundSize: "cover", backgroundPosition: "center" }}
               role={onOpen ? "button" : "img"} aria-label={ui.recipeName(r, language)}>
               <div style={{ position: "absolute", left: 10, right: 10, bottom: 8, color: "#fff", textAlign: language === "ar" ? "right" : "left" }} dir={language === "ar" ? "rtl" : "ltr"}>
                 <div style={{ fontWeight: 700, fontSize: 13.5, lineHeight: 1.25, textShadow: "0 1px 3px rgba(0,0,0,.5)" }}>{ui.recipeName(r, language)}</div>

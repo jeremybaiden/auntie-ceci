@@ -9660,7 +9660,7 @@ function MoreScreen({ onOpen, onOpenSettings, favoritesCount, shoppingCount, rec
           <div className="ms-inspire-grid">
             {inspire.map((r) => (
               <button key={r.id} onClick={() => onOpenRecipe(r)} className="ms-inspire-tile" aria-label={recipeName(r, language)}
-                style={{ backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.65)), url(${RECIPE_IMAGES[r.remixOf || r.id]})` }}>
+                style={{ backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 52%, rgba(0,0,0,0.6)), url(${RECIPE_IMAGES[r.remixOf || r.id]})` }}>
                 <span>{recipeName(r, language)}</span>
               </button>
             ))}
