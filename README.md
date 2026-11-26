@@ -15,7 +15,7 @@ An AI-powered cooking companion for students and complete beginners. Tell it wha
 - **Community**: tips, recipe feedback with stars, improvement suggestions, short tutorials (link or uploaded video) and shared recipes, shared by everyone. Signed-in cooks post, mark posts helpful and report problems; moderators can remove posts.
 - **Smart Shopping**: a shopping list and store search links.
 - **7 languages**: English, Español, Français, Português, हिन्दी, 中文 and العربية. Arabic uses a right-to-left layout, and you pick your language on the first screen.
-- Phone and desktop views.
+- Phone and desktop views. Add it to your home screen (More → Add to home screen) to open it like an app.
 
 ## Run it locally
 

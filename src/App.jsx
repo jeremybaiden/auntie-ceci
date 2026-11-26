@@ -36,6 +36,7 @@ import {
 import { ACTIVITY as NUTRI_ACTIVITY, GOALS as NUTRI_GOALS, SEXES as NUTRI_SEXES, estimateGoals, bodyFromProfile, SOURCES as NUTRI_SOURCES } from "./nutrition.js";
 import { NUTRI_TR } from "./nutrition-tr.js";
 import { TourCard, TOUR_STEPS, TOUR_UI, tourEmit } from "./tour.jsx";
+import { InstallScreen, InstallHint, installText, isStandalone } from "./install.jsx";
 import { RECIPE_IMAGES } from "./recipe-images.js";
 import { loadAppearance, saveAppearance, resolvedTheme, watchSystemTheme, injectAppearanceCss, applyAppearance } from "./appearance.js";
 import { pickRecipeIds } from "./photos.jsx";
@@ -100,12 +101,37 @@ html[data-ms-motion="reduce"] .ms-tour-target { animation: none; box-shadow: 0 0
 .ms-desktop .ms-more-grid > button:hover { border-color: var(--ms-primary) !important; box-shadow: 0 2px 10px rgba(51,53,47,0.06); }
 @media (max-width: 700px) { .ms-desktop .ms-screen > div { padding-left: 16px; padding-right: 16px; } }
 .ms-desktop .ms-header { flex-wrap: wrap; row-gap: 8px; }
+@supports (height: 100dvh) {
+  .ms-root.ms-desktop > .ms-frame { height: calc(100dvh - 40px) !important; }
+  .ms-tour-card { max-height: calc(100dvh - 24px) !important; }
+}
 @media (max-width: 640px) {
   .ms-root.ms-desktop { padding: 0 !important; }
   .ms-root.ms-desktop > .ms-frame { border-radius: 0 !important; border: none !important; box-shadow: none !important; height: 100vh !important; height: 100dvh !important; min-height: 0 !important; }
   .ms-desktop .ms-header { padding: 14px 16px 10px !important; }
   .ms-desktop .ms-tabbar { padding: 8px 6px max(12px, env(safe-area-inset-bottom)) !important; }
 }
+/* Phones turned sideways, and touch tablets: fill the screen so the tab bar is never pushed off it */
+@media (max-height: 600px), (pointer: coarse) and (max-width: 1100px) {
+  .ms-root.ms-desktop { padding: 0 !important; }
+  .ms-root.ms-desktop > .ms-frame { border-radius: 0 !important; border: none !important; box-shadow: none !important; height: 100vh !important; height: 100dvh !important; min-height: 0 !important; }
+  .ms-desktop .ms-tabbar { padding-bottom: max(10px, env(safe-area-inset-bottom)) !important; }
+}
+@media (max-height: 600px) { .ms-desktop .ms-header { padding-top: 8px !important; padding-bottom: 6px !important; } .ms-desktop .ms-header img { width: 38px !important; height: 38px !important; } }
+/* Tour card: smaller on phones so it covers less of the screen */
+@media (max-width: 640px) {
+  .ms-tour-card { padding: 12px 14px !important; border-radius: 16px !important; }
+  .ms-tour-emoji { width: 38px !important; height: 38px !important; font-size: 22px !important; border-radius: 11px !important; }
+  .ms-tour-h { font-size: 17px !important; }
+  .ms-tour-body { font-size: 13.5px !important; line-height: 1.45 !important; }
+}
+/* iPhones zoom the whole page in when a text box under 16px is tapped, and don't zoom back out */
+@media (pointer: coarse) {
+  .ms-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), .ms-root select, .ms-root textarea { font-size: 16px !important; }
+  :root[data-ms-text="small"] .ms-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), :root[data-ms-text="small"] .ms-root select, :root[data-ms-text="small"] .ms-root textarea { font-size: 17.8px !important; }
+}
+/* Messages that pop up stay on screen, even long translated ones */
+.ms-toast { max-width: calc(100% - 32px); white-space: normal !important; text-align: center; box-sizing: border-box; z-index: 4; }
 @media (max-width: 820px) { .ms-desktop .ms-nav { order: 3; width: 100%; overflow-x: auto; margin-inline-end: 0 !important; } }
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Lobster&family=Inter:wght@400;500;600;700&display=swap');
 @keyframes auntieTypingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }`;
@@ -7736,6 +7762,7 @@ export default function App() {
               onOpenRecipe={startGuided}
               onGoCook={() => setScreen("cook")}
               onGoKitchen={() => setScreen("kitchen")}
+              onOpenInstall={() => { setPrevScreen("home"); setScreen("install"); }}
               mealPrepCard={<MealPrepHomeCard ui={MEALPREP_UI} hasPlan={!!mealPlan} onOpen={() => { setPrevScreen("home"); setScreen("mealprep"); }} />}
             />
           )}
@@ -7894,6 +7921,9 @@ export default function App() {
           {screen === "nutrition" && (
             <NutritionGoalsScreen profile={profile} onSaveProfile={(patch) => setProfile((prev) => ({ ...prev, ...patch }))} onBack={() => setScreen(prevScreen === "nutrition" ? "more" : prevScreen)} />
           )}
+          {screen === "install" && (
+            <InstallScreen lang={language} colors={COLORS} styles={styles} ArrowLeft={ArrowLeft} onBack={() => setScreen(["home", "more"].includes(prevScreen) ? prevScreen : "more")} />
+          )}
           {screen === "glossary" && (
             <NutritionGlossaryScreen onBack={() => setScreen(prevScreen)} />
           )}
@@ -7914,7 +7944,7 @@ export default function App() {
           </ScreenErrorBoundary>
         </div>
 
-        {toast && <div style={styles.toast}>{toast}</div>}
+        {toast && <div className="ms-toast" role="status" style={styles.toast}>{toast}</div>}
 
         {showTabBar && (
           <div className="ms-tabbar" style={isDesktop ? { ...styles.tabBar, ...styles.tabBarDesktop } : styles.tabBar}>
@@ -9511,7 +9541,7 @@ function HistoryScreen({ recipes, history, onRate, onNote, onBack }) {
   );
 }
 
-function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, history, favorites, toggleFavorite, onOpenRecipe, onGoCook, onGoKitchen, mealPrepCard }) {
+function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, history, favorites, toggleFavorite, onOpenRecipe, onGoCook, onGoKitchen, mealPrepCard, onOpenInstall }) {
   const { t, language } = useContext(LanguageContext);
   const [tip] = useState(() => BEGINNER_TIPS[Math.floor(Math.random() * BEGINNER_TIPS.length)]);
   const allergies = useContext(AllergyContext);
@@ -9529,6 +9559,7 @@ function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, histo
     <div style={styles.screenPad} className="ms-home">
       <h1 style={styles.h1}>{profile?.name ? `Hey, ${profile.name}` : t("homeGreetingFallback")}</h1>
       <p style={styles.subtext}>{t("homeSubtitle")}</p>
+      {onOpenInstall && <InstallHint lang={language} colors={COLORS} onOpen={onOpenInstall} Smartphone={Smartphone} X={X} />}
       <div className="ms-home-grid">
       <div className="ms-home-side">
 
@@ -9589,6 +9620,7 @@ function MoreScreen({ onOpen, onOpenSettings, favoritesCount, shoppingCount, rec
     { icon: ShoppingCart, label: t("shoppingLabel"), sub: shoppingCount > 0 ? `${shoppingCount} ${pl(shoppingCount, PL.listItem, language)}` : t("shoppingSub"), action: () => onOpen("shopping") },
     { icon: CalendarDays, label: MP.title[language] || MP.title.en, sub: MP.moreSub[language] || MP.moreSub.en, action: () => onOpen("mealprep"), tour: "more-mealprep" },
     { icon: Target, label: nt("navLabel", language), sub: nt("navSub", language), action: () => onOpen("nutrition") },
+    ...(isStandalone() ? [] : [{ icon: Smartphone, label: installText(language, "navLabel"), sub: installText(language, "navSub"), action: () => onOpen("install") }]),
     { icon: Compass, label: TOUR_UI.label[language] || TOUR_UI.label.en, sub: TOUR_UI.sub[language] || TOUR_UI.sub.en, action: () => onOpen("tour") },
     { icon: BookOpen, label: t("glossaryLabel"), sub: t("glossarySub"), action: () => onOpen("glossary") },
     { icon: MessageSquare, label: t("feedbackLabel"), sub: t("feedbackSub"), action: () => onOpen("feedback") },

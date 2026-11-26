@@ -22,6 +22,8 @@ export const TOUR_UI = {
   done: S("Nice, done!", "¡Bien hecho!", "Bravo, c'est fait !", "Boa, feito!", "बढ़िया, हो गया!", "很好，完成了！", "أحسنت، تم!"),
   waiting: S("Waiting for you to try it…", "Esperando a que lo pruebes…", "À vous d'essayer…", "Esperando você tentar…", "आपके करने का इंतज़ार है…", "等你来试试……", "بانتظار أن تجرّبها…"),
   missing: S("Not on this screen right now, so you can skip ahead.", "No aparece en esta pantalla ahora; puedes seguir.", "Pas sur cet écran pour l'instant, vous pouvez continuer.", "Não está nesta tela agora; pode seguir.", "अभी यह इस स्क्रीन पर नहीं है, आप आगे बढ़ सकते हैं।", "当前页面上没有这个，可以直接继续。", "غير موجود في هذه الشاشة الآن، يمكنك المتابعة."),
+  hide: S("Minimize", "Minimizar", "Réduire", "Minimizar", "छोटा करें", "收起", "تصغير"),
+  show: S("Show tip", "Ver consejo", "Afficher", "Mostrar dica", "टिप दिखाएँ", "展开提示", "عرض"),
   finish: S("Start cooking", "Empezar a cocinar", "Commencer à cuisiner", "Começar a cozinhar", "खाना बनाना शुरू करें", "开始做饭", "ابدأ الطبخ"),
 };
 
@@ -165,12 +167,34 @@ export function TourCard({ step, total, data, lang, colors, onNext, onBack, onSk
   const [done, setDone] = useState(false);
   const [missing, setMissing] = useState(false);
   const [atTop, setAtTop] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [keyboard, setKeyboard] = useState(false);
   const nextRef = useRef(null);
   const onNextRef = useRef(onNext);
   onNextRef.current = onNext;
 
   // Reset for each step.
-  useEffect(() => { setDone(false); setMissing(false); setAtTop(false); }, [step]);
+  useEffect(() => { setDone(false); setMissing(false); setAtTop(false); setCollapsed(false); }, [step]);
+
+  // Phones: while the on-screen keyboard is up, shrink to a slim bar at the top
+  // so the card never sits over the box you're typing in.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const vv = window.visualViewport;
+    const coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    const check = () => {
+      const typing = coarse && /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || "") && !/checkbox|radio|button|submit|range/i.test(document.activeElement?.type || "");
+      const squeezed = vv ? vv.height < window.innerHeight * 0.75 : false;
+      setKeyboard(typing || squeezed);
+    };
+    check();
+    if (vv) vv.addEventListener("resize", check);
+    document.addEventListener("focusin", check);
+    let timer = 0;
+    const later = () => { clearTimeout(timer); timer = setTimeout(check, 60); };
+    document.addEventListener("focusout", later);
+    return () => { clearTimeout(timer); if (vv) vv.removeEventListener("resize", check); document.removeEventListener("focusin", check); document.removeEventListener("focusout", later); };
+  }, []);
 
   // Listen for the thing this step is waiting for.
   useEffect(() => {
@@ -218,26 +242,55 @@ export function TourCard({ step, total, data, lang, colors, onNext, onBack, onSk
     return () => window.removeEventListener("keydown", onKey);
   }, [step, onNext, onBack, onSkip]);
 
-  const pos = atTop ? { top: 16, bottom: "auto" } : { bottom: 16, top: "auto" };
+  const slim = collapsed || keyboard;
+  const pos = atTop || keyboard
+    ? { top: "max(10px, env(safe-area-inset-top))", bottom: "auto" }
+    : { bottom: "calc(10px + env(safe-area-inset-bottom))", top: "auto" };
+
+  if (slim) {
+    // Slim bar: step, title and a way back to the full card. Still lets you go on.
+    return (
+      <div className="ms-tour ms-tour-slim" role="dialog" aria-modal="false" aria-labelledby="ms-tour-title"
+        style={{ position: "fixed", insetInline: 0, ...pos, zIndex: 60, display: "flex", justifyContent: "center", padding: "0 10px", pointerEvents: "none" }}>
+        <div style={{ pointerEvents: "auto", width: "100%", maxWidth: 520, background: C.card, color: C.ink, borderRadius: 14, boxShadow: "0 8px 24px rgba(0,0,0,0.22)", border: `1px solid ${C.line}`, padding: "6px 6px 6px 12px", display: "flex", alignItems: "center", gap: 8, boxSizing: "border-box" }}>
+          <span aria-hidden="true" style={{ fontSize: 18, lineHeight: 1 }}>{done ? "✅" : data.emoji}</span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", color: C.inkMuted }}>{ui("step").replace("{n}", step + 1).replace("{total}", total)}</div>
+            <div id="ms-tour-title" style={{ fontSize: 13.5, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{done ? `✓ ${ui("done")}` : pick(data.title, lang)}</div>
+          </div>
+          {!keyboard && (
+            <button onClick={() => setCollapsed(false)} style={{ flexShrink: 0, padding: "8px 12px", borderRadius: 10, border: `1px solid ${C.line}`, background: C.paper, color: C.ink, fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>{ui("show")}</button>
+          )}
+          {!isTask && !keyboard && (
+            <button onClick={onNext} style={{ flexShrink: 0, padding: "8px 12px", borderRadius: 10, border: "none", background: C.primary, color: "#fff", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>{last ? ui("finish") : ui("next")}</button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="ms-tour" role="dialog" aria-modal="false" aria-labelledby="ms-tour-title" aria-describedby="ms-tour-body"
-      style={{ position: "fixed", insetInline: 0, ...pos, zIndex: 60, display: "flex", justifyContent: "center", padding: "0 12px", pointerEvents: "none" }}>
-      <div className="ms-tour-card" style={{ pointerEvents: "auto", width: "100%", maxWidth: 520, background: C.card, color: C.ink, borderRadius: 18, boxShadow: "0 16px 44px rgba(0,0,0,0.26)", border: `1px solid ${C.line}`, padding: "14px 18px 14px" }}>
+      style={{ position: "fixed", insetInline: 0, ...pos, zIndex: 60, display: "flex", justifyContent: "center", padding: "0 10px", pointerEvents: "none" }}>
+      <div className="ms-tour-card" style={{ pointerEvents: "auto", width: "100%", maxWidth: 520, boxSizing: "border-box", maxHeight: "calc(100vh - 24px)", overflowY: "auto", overscrollBehavior: "contain", background: C.card, color: C.ink, borderRadius: 18, boxShadow: "0 16px 44px rgba(0,0,0,0.26)", border: `1px solid ${C.line}`, padding: "14px 18px 14px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
           <span style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", color: C.inkMuted }}>
             {ui("step").replace("{n}", step + 1).replace("{total}", total)}
             {isTask && <span style={{ marginInlineStart: 8, padding: "2px 8px", borderRadius: 10, background: C.accentSofter, color: C.accentText, letterSpacing: 0, textTransform: "none" }}>👆 {ui("tryIt")}</span>}
           </span>
-          <button onClick={onSkip} style={{ background: "none", border: "none", color: C.inkMuted, fontSize: 13, cursor: "pointer", padding: 6, fontFamily: "inherit", textDecoration: "underline" }}>{ui("skip")}</button>
+          <span style={{ display: "flex", alignItems: "center", gap: 2, flexShrink: 0 }}>
+            <button onClick={() => setCollapsed(true)} aria-label={ui("hide")} title={ui("hide")} className="ms-tour-min" style={{ background: "none", border: "none", color: C.inkMuted, lineHeight: 0, cursor: "pointer", padding: "6px 8px", fontFamily: "inherit" }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></button>
+            <button onClick={onSkip} style={{ background: "none", border: "none", color: C.inkMuted, fontSize: 13, cursor: "pointer", padding: 6, fontFamily: "inherit", textDecoration: "underline" }}>{ui("skip")}</button>
+          </span>
         </div>
         <div style={{ height: 4, background: C.line, borderRadius: 4, marginTop: 4, overflow: "hidden" }} aria-hidden="true">
           <div style={{ width: `${((step + (done ? 1 : 0.5)) / total) * 100}%`, height: "100%", background: C.primary, borderRadius: 4, transition: "width .3s" }} />
         </div>
         <div style={{ display: "flex", gap: 12, alignItems: "flex-start", marginTop: 12 }}>
-          <div aria-hidden="true" style={{ fontSize: 28, lineHeight: 1, flexShrink: 0, width: 46, height: 46, borderRadius: 13, background: C.sageSofter, display: "flex", alignItems: "center", justifyContent: "center" }}>{done ? "✅" : data.emoji}</div>
+          <div aria-hidden="true" className="ms-tour-emoji" style={{ fontSize: 28, lineHeight: 1, flexShrink: 0, width: 46, height: 46, borderRadius: 13, background: C.sageSofter, display: "flex", alignItems: "center", justifyContent: "center" }}>{done ? "✅" : data.emoji}</div>
           <div style={{ minWidth: 0 }}>
-            <h2 id="ms-tour-title" style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 19, fontWeight: 700, margin: "1px 0 5px", lineHeight: 1.25 }}>{pick(data.title, lang)}</h2>
-            <p id="ms-tour-body" style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: C.ink }}>{pick(data.body, lang)}</p>
+            <h2 id="ms-tour-title" className="ms-tour-h" style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: 19, fontWeight: 700, margin: "1px 0 5px", lineHeight: 1.25 }}>{pick(data.title, lang)}</h2>
+            <p id="ms-tour-body" className="ms-tour-body" style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: C.ink }}>{pick(data.body, lang)}</p>
             {isTask && (
               <p role="status" aria-live="polite" style={{ margin: "8px 0 0", fontSize: 13, fontWeight: 600, color: done ? C.primaryText : C.inkMuted }}>
                 {done ? `✓ ${ui("done")}` : missing ? ui("missing") : ui("waiting")}

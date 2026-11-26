@@ -5,6 +5,8 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import { startCloud, AuthScreen, isGuestChosen, chooseGuest } from "./cloud.jsx";
 import { injectAppearanceCss, applyAppearance, loadAppearance } from "./appearance.js";
+import { captureInstallPrompt } from "./install.jsx";
+captureInstallPrompt();
 injectAppearanceCss();
 applyAppearance(loadAppearance());
 window.React = React;
