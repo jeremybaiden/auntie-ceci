@@ -96,9 +96,6 @@ const FONT_IMPORT = `[dir="rtl"] .ms-flip { transform: scaleX(-1); }
 html[data-ms-motion="reduce"] .ms-tour-target { animation: none; box-shadow: 0 0 0 3px var(--ms-primary); }
 .ms-inspire-tile { position: relative; aspect-ratio: 4 / 3; border: none; border-radius: 14px; background-size: cover; background-position: center; cursor: pointer; overflow: hidden; display: flex; align-items: flex-end; padding: 10px 12px; text-align: start; transition: transform .15s; }
 .ms-inspire-tile:hover { transform: translateY(-2px); }
-@keyframes msInspireShake { 0%, 100% { transform: translateX(0) rotate(0); } 15% { transform: translateX(-4px) rotate(-1.5deg); } 30% { transform: translateX(4px) rotate(1.5deg); } 45% { transform: translateX(-3px) rotate(-1deg); } 60% { transform: translateX(3px) rotate(1deg); } 75% { transform: translateX(-1px) rotate(-0.5deg); } }
-.ms-inspire-tile.ms-shake { animation: msInspireShake .45s ease-in-out both; }
-@media (prefers-reduced-motion: reduce) { .ms-inspire-tile.ms-shake { animation: none; } }
 .ms-inspire-tile span { color: #fff; font-weight: 600; font-size: 14px; line-height: 1.25; text-shadow: 0 1px 3px rgba(0,0,0,0.5); font-family: 'Inter', sans-serif; }
 .ms-desktop .ms-more-grid > button:hover { border-color: var(--ms-primary) !important; box-shadow: 0 2px 10px rgba(51,53,47,0.06); }
 @media (max-width: 700px) { .ms-desktop .ms-screen > div { padding-left: 16px; padding-right: 16px; } }
@@ -9584,9 +9581,7 @@ function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, histo
 function MoreScreen({ onOpen, onOpenSettings, favoritesCount, shoppingCount, recipes = [], onOpenRecipe }) {
   const { t, language } = useContext(LanguageContext);
   const [inspireIds, setInspireIds] = useState(() => pickRecipeIds(8));
-  const [shuffleCount, setShuffleCount] = useState(0);
   const inspire = inspireIds.map((id) => recipes.find((r) => r.id === id)).filter(Boolean);
-  const shuffleInspire = () => { setInspireIds(pickRecipeIds(8)); setShuffleCount((n) => n + 1); };
   const rows = [
     { icon: Clock, label: t("historyLabel"), sub: t("historySub"), action: () => onOpen("history") },
     { icon: BookOpen, label: t("cookbookLabel"), sub: favoritesCount > 0 ? `${favoritesCount} ${pl(favoritesCount, PL.savedRecipe, language)}` : t("cookbookSub"), action: () => onOpen("cookbook") },
@@ -9623,14 +9618,14 @@ function MoreScreen({ onOpen, onOpenSettings, favoritesCount, shoppingCount, rec
               <h2 id="ms-inspire" style={{ ...styles.h1, fontSize: 20, margin: 0 }}>{t("getInspired")}</h2>
               <p style={{ ...styles.subtext, marginTop: 2 }}>{t("getInspiredSub")}</p>
             </div>
-            <button onClick={shuffleInspire} style={{ ...styles.linkButton, fontWeight: 600, display: "flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
+            <button onClick={() => setInspireIds(pickRecipeIds(8))} style={{ ...styles.linkButton, fontWeight: 600, display: "flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
               <RotateCcw size={13} color={COLORS.primaryText} /> {t("shuffleLabel")}
             </button>
           </div>
           <div className="ms-inspire-grid">
-            {inspire.map((r, i) => (
-              <button key={`${r.id}-${shuffleCount}`} onClick={() => onOpenRecipe(r)} className={shuffleCount > 0 ? "ms-inspire-tile ms-shake" : "ms-inspire-tile"} aria-label={recipeName(r, language)}
-                style={{ animationDelay: shuffleCount > 0 ? `${i * 30}ms` : undefined, backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.65)), url(${RECIPE_IMAGES[r.remixOf || r.id]})` }}>
+            {inspire.map((r) => (
+              <button key={r.id} onClick={() => onOpenRecipe(r)} className="ms-inspire-tile" aria-label={recipeName(r, language)}
+                style={{ backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.65)), url(${RECIPE_IMAGES[r.remixOf || r.id]})` }}>
                 <span>{recipeName(r, language)}</span>
               </button>
             ))}
