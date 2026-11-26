@@ -8615,7 +8615,7 @@ function RecipeCard({ recipe, info, onOpen, showIngredientCount, favorites, togg
   const isFav = favorites && favorites[recipe.id];
   return (
     <div className="ms-recipe-card" style={styles.recipeCard} onClick={() => onOpen(recipe)} role="button" tabIndex={0}
-      aria-label={`${recipeName(recipe, language)}. ${info.makeable ? t("readyBadgeLabel") : `${t("missingBadgeLabel")} ${info.missingIngredients.length + (info.haveEquip ? 0 : 1)}`}`}
+      aria-label={`${recipeName(recipe, language)}. ${info.makeable ? t("readyBadgeLabel") : `${t("missingBadgeLabel")} ${itemsLeft(info)}`}`}
       onKeyDown={(e) => { if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); onOpen(recipe); } }}>
       <div style={{ display: "flex", gap: 12 }}>
         <RecipeImage recipe={recipe} height={64} />
@@ -8636,7 +8636,7 @@ function RecipeCard({ recipe, info, onOpen, showIngredientCount, favorites, togg
               {info.makeable ? (
                 <span style={styles.readyBadge}><Check size={11} style={{ marginInlineEnd: 3 }} /> {t("readyBadgeLabel")}</span>
               ) : (
-                <span style={styles.missingBadge}>{t("missingBadgeLabel")} {info.missingIngredients.length + (info.haveEquip ? 0 : 1)}</span>
+                <span style={styles.missingBadge}>{t("missingBadgeLabel")} {itemsLeft(info)}</span>
               )}
             </div>
           </div>
@@ -8729,7 +8729,7 @@ function CookScreen({ recipes, kitchenIngredients = [], matchInfo, onOpen, onEdi
 
   const withInfo = filtered.map((r) => ({ recipe: r, info: matchInfo(r) }));
   const ready = withInfo.filter((x) => x.info.makeable);
-  const almost = withInfo.filter((x) => !x.info.makeable).sort((a, b) => a.info.missingIngredients.length - b.info.missingIngredients.length);
+  const almost = withInfo.filter((x) => !x.info.makeable).sort(byItemsLeft(language));
   const anyFilterActive = selectedMealTimes.length > 0 || selectedCategories.length > 0 || selectedCuisines.length > 0;
 
   const searchResults = recipes
@@ -8743,7 +8743,7 @@ function CookScreen({ recipes, kitchenIngredients = [], matchInfo, onOpen, onEdi
     .sort((a, b) =>
       (a.recipe.ingredients.length - b.recipe.ingredients.length) ||
       (b.info.makeable - a.info.makeable) ||
-      ((a.info.missingIngredients.length + a.info.missingEquipment.length) - (b.info.missingIngredients.length + b.info.missingEquipment.length)) ||
+      (itemsLeft(a.info) - itemsLeft(b.info)) ||
       recipeName(a.recipe, language).localeCompare(recipeName(b.recipe, language), language));
 
   // Several ingredients: "All of these" needs every one, "Any of these" needs at
@@ -8758,6 +8758,7 @@ function CookScreen({ recipes, kitchenIngredients = [], matchInfo, onOpen, onEdi
         .sort((a, b) =>
           (b.info.makeable - a.info.makeable) ||
           (b.hits - a.hits) ||
+          (itemsLeft(a.info) - itemsLeft(b.info)) ||
           (a.info.missingIngredients.length - b.info.missingIngredients.length) ||
           (a.recipe.ingredients.length - b.recipe.ingredients.length))
     : [];
@@ -9554,7 +9555,7 @@ function HomeScreen({ profile, ingredients, equipment, recipes, matchInfo, histo
   // Ready-to-cook first, then the ones you're only an item or two away from, so the space is useful.
   const recommended = [
     ...scored.filter((x) => x.info.makeable),
-    ...scored.filter((x) => !x.info.makeable && x.info.haveEquip && x.info.missingIngredients.length <= 2).sort((a, b) => a.info.missingIngredients.length - b.info.missingIngredients.length),
+    ...scored.filter((x) => !x.info.makeable && x.info.haveEquip && x.info.missingIngredients.length <= 2).sort(byItemsLeft(language)),
   ].slice(0, 8);
   const equipCount = Object.values(equipment).filter(Boolean).length;
 
@@ -10393,6 +10394,15 @@ function RatingBadge({ recipeId, compact }) {
     </span>
   );
 }
+
+// How many things a recipe still needs: each missing ingredient, plus 1 if any tool is missing.
+// The same number the "Missing N" badge shows, so lists sort the way the cards read.
+const itemsLeft = (info) => info.missingIngredients.length + (info.haveEquip ? 0 : 1);
+// Fewest items left first; then fewest missing ingredients; then A–Z so the order never jumps around.
+const byItemsLeft = (lang) => (a, b) =>
+  (itemsLeft(a.info) - itemsLeft(b.info)) ||
+  (a.info.missingIngredients.length - b.info.missingIngredients.length) ||
+  recipeName(a.recipe, lang).localeCompare(recipeName(b.recipe, lang), lang);
 
 // Recipes you write yourself may have no nutrition numbers; don't show "0 calories".
 const hasMacros = (r) => !!(r && r.macros && (Number(r.macros.calories) || Number(r.macros.protein) || Number(r.macros.carbs) || Number(r.macros.fat)));
