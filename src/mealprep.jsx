@@ -464,7 +464,7 @@ export function MealPrepScreen({ ui, plan, setPlan, draft, setDraft, recipes, ma
     display: "flex", alignItems: "center", gap: 10, padding: "13px 14px", borderRadius: 14, cursor: "pointer", textAlign: "start", width: "100%",
     border: `1.5px solid ${active ? COLORS.primary : COLORS.line}`, background: active ? COLORS.sage : COLORS.card, color: COLORS.ink, fontFamily: "'Inter', sans-serif", fontSize: 14,
   });
-  const grid = { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 10, marginTop: 14 };
+  const grid = { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(150px, 100%), 1fr))", gap: 10, marginTop: 14 };
   const numBtn = (active) => ({ ...tile(active), justifyContent: "center", fontWeight: 600, fontSize: 16, padding: "14px 0" });
   const fmtDay = (offset, opts = { weekday: "short", month: "short", day: "numeric" }) => {
     try { return new Intl.DateTimeFormat(LOCALES[language] || "en-CA", opts).format(dayDate(plan?.startDate, offset)); } catch { return dayDate(plan?.startDate, offset).toDateString(); }

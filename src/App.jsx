@@ -81,16 +81,16 @@ const FONT_IMPORT = `[dir="rtl"] .ms-flip { transform: scaleX(-1); }
 .ms-desktop .ms-screen > div { max-width: 1200px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
 .ms-desktop .ms-screen > div.ms-home { max-width: 1480px; }
 @media (min-width: 1000px) {
-  .ms-desktop .ms-home-grid { display: grid; grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.6fr); gap: 28px; align-items: start; }
+  .ms-desktop .ms-home-grid { display: grid; grid-template-columns: minmax(min(320px, 100%), 0.85fr) minmax(0, 1.6fr); gap: 28px; align-items: start; }
   .ms-desktop .ms-home-main > section { margin-top: 16px !important; }
-  .ms-desktop .ms-home-recs { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important; }
+  .ms-desktop .ms-home-recs { grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)) !important; }
 }
-.ms-desktop div:has(> .ms-recipe-card) { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 12px; }
+.ms-desktop div:has(> .ms-recipe-card) { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr)); gap: 12px; }
 .ms-desktop div:has(> .ms-recipe-card) > .ms-recipe-card { margin-bottom: 0 !important; }
-.ms-desktop .ms-more-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; max-width: 980px; }
+.ms-desktop .ms-more-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 12px; max-width: 980px; }
 .ms-desktop .ms-more-grid > button { border: 1px solid var(--ms-line) !important; border-radius: 14px; padding: 16px !important; background: var(--ms-card) !important; transition: border-color .15s, box-shadow .15s; }
 .ms-inspire-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
-.ms-desktop .ms-inspire-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; max-width: 980px; }
+.ms-desktop .ms-inspire-grid { grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); gap: 12px; max-width: 980px; }
 @keyframes msTourPulse { 0%, 100% { box-shadow: 0 0 0 3px var(--ms-primary), 0 0 0 7px rgba(79,100,73,0.25); } 50% { box-shadow: 0 0 0 3px var(--ms-primary), 0 0 0 12px rgba(79,100,73,0.08); } }
 .ms-tour-target { position: relative; z-index: 5; border-radius: 12px; animation: msTourPulse 1.6s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .ms-tour-target { animation: none; box-shadow: 0 0 0 3px var(--ms-primary); } }
@@ -8438,7 +8438,7 @@ function SettingsScreen({ profile, onSave, onChangeLanguage, onBack, selectedCat
         </div>
         <button onClick={onFeedback} style={{ ...styles.resetButton, marginTop: 0 }}><MessageSquare size={14} color={COLORS.primaryText} style={{ marginInlineEnd: 6 }} />{tr("sendFeedback")}</button>
       </div>
-      <p dir="ltr" style={{ ...styles.recipeMeta, textAlign: "center", margin: "28px 0 4px" }}>{COPYRIGHT}</p>
+      <p dir="ltr" style={{ ...styles.recipeMeta, whiteSpace: "normal", textAlign: "center", margin: "28px 0 4px" }}>{COPYRIGHT}</p>
     </div>
   );
 }
@@ -8620,8 +8620,8 @@ function RecipeCard({ recipe, info, onOpen, showIngredientCount, favorites, togg
         <RecipeImage recipe={recipe} height={64} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={styles.recipeCardTop}>
-            <span style={{ ...styles.recipeName, minWidth: 0, overflowWrap: "anywhere", lineHeight: 1.3 }}>{recipeName(recipe, language)}</span>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+            <span style={{ ...styles.recipeName, flex: "1 1 110px", minWidth: 0, overflowWrap: "break-word", lineHeight: 1.3 }}>{recipeName(recipe, language)}</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0, marginInlineStart: "auto" }}>
               {onEdit && (
                 <button onClick={(e) => { e.stopPropagation(); onEdit(recipe); }} aria-label={`${t("aEdit")}: ${recipeName(recipe, language)}`} style={styles.favButton}>
                   <Pencil size={14} color={COLORS.inkMuted} />
@@ -9093,15 +9093,15 @@ function GuidedScreen({ recipe, stepIndex, onNext, onPrev, servings, setServings
         </div>
       </div>
 
-      <div style={styles.macroRow}>
+      {hasMacros(recipe) && <div style={styles.macroRow}>
         <span style={{ ...styles.recipeMeta, alignSelf: "center" }}>{nt("perServing", language)}:</span>
         <span style={styles.macroChip}>{recipe.macros.calories} {t("caloriesWord").toLowerCase()}</span>
         <span style={styles.macroChip}>{recipe.macros.protein}g {t("proteinWord").toLowerCase()}</span>
         <span style={styles.macroChip}>{recipe.macros.carbs}g {t("carbsWord").toLowerCase()}</span>
         <span style={styles.macroChip}>{recipe.macros.fat}g {t("fatWord").toLowerCase()}</span>
         <DayShare calories={recipe.macros.calories} />
-      </div>
-      {servings !== 1 && <div style={{ ...styles.recipeMeta, whiteSpace: "normal", marginTop: 4 }}>{nt("wholeMeal", language).replace("{s}", servings).replace("{c}", scale(recipe.macros.calories)).replace("{p}", scale(recipe.macros.protein))}</div>}
+      </div>}
+      {servings !== 1 && hasMacros(recipe) && <div style={{ ...styles.recipeMeta, whiteSpace: "normal", marginTop: 4 }}>{nt("wholeMeal", language).replace("{s}", servings).replace("{c}", scale(recipe.macros.calories)).replace("{p}", scale(recipe.macros.protein))}</div>}
       <div style={styles.progressTrack}><div style={{ ...styles.progressFill, width: `${((stepIndex + 1) / steps.length) * 100}%` }} /></div>
       <div style={styles.stepCounter}>{t("stepOfLabel")} {stepIndex + 1} / {steps.length}</div>
 
@@ -9180,6 +9180,7 @@ function CompleteScreen({ recipe, servings, onDone }) {
       <h1 style={styles.h1}>{t("niceWorkTitle")}</h1>
       <p style={styles.subtext}>{t("youJustMade")} {recipeName(recipe, language)}.</p>
 
+      {hasMacros(recipe) && <>
       <div style={{ ...styles.sectionLabel, marginTop: 20 }}>{t("nutritionPerServing")}</div>
       <div style={styles.macroGrid}>
         <div style={styles.macroCell}><div style={styles.macroCellValue}>{recipe.macros.calories}</div><div style={styles.macroCellLabel}>{t("caloriesWord")}</div></div>
@@ -9191,6 +9192,7 @@ function CompleteScreen({ recipe, servings, onDone }) {
         <span style={{ ...styles.recipeMeta, whiteSpace: "normal" }}>{nt("wholeMeal", language).replace("{s}", servings).replace("{c}", scale(recipe.macros.calories)).replace("{p}", scale(recipe.macros.protein))}</span>
         <DayShare calories={recipe.macros.calories} />
       </div>
+      </>}
 
       <div style={{ ...styles.sectionLabel, marginTop: 20 }}>{t("wantMoreFlavor")}</div>
       <div style={styles.milestoneCard}>
@@ -9521,7 +9523,7 @@ function HistoryScreen({ recipes, history, onRate, onNote, onBack }) {
                 <div style={styles.recipeMeta}>{whenLabel(h, language)}</div>
                 <div style={{ display: "flex", marginTop: 8 }}>
                   {[1, 2, 3, 4, 5].map((n) => (
-                    <button key={n} onClick={() => onRate(h.uid, n)} style={styles.starButton}>
+                    <button key={n} onClick={() => onRate(h.uid, n)} aria-label={`${n} / 5 ★`} aria-pressed={n === h.rating} style={styles.starButton}>
                       <Star size={17} color={n <= h.rating ? COLORS.accent : COLORS.line} fill={n <= h.rating ? COLORS.accent : "none"} />
                     </button>
                   ))}
@@ -9691,7 +9693,7 @@ function CookbookScreen({ recipes, userRecipes, favorites, toggleFavorite, setFa
             <RecipeImage recipe={recipe} height={56} />
             <div style={{ flex: 1 }}>
               <div style={styles.recipeCardTop}>
-                <span style={styles.recipeName}>{recipeName(recipe, language)}</span>
+                <span style={{ ...styles.recipeName, flex: "1 1 110px", minWidth: 0, overflowWrap: "break-word" }}>{recipeName(recipe, language)}</span>
                 <button onClick={() => toggleFavorite(recipe.id)} aria-label={t(favorites[recipe.id] ? "aUnsave" : "aSave")} aria-pressed={!!favorites[recipe.id]} style={styles.favButton}>
                   <Heart size={16} color={favorites[recipe.id] ? COLORS.accent : COLORS.inkMuted} fill={favorites[recipe.id] ? COLORS.accent : "none"} />
                 </button>
@@ -9717,7 +9719,7 @@ function CookbookScreen({ recipes, userRecipes, favorites, toggleFavorite, setFa
             <RecipeImage recipe={recipe} height={56} />
             <div style={{ flex: 1 }}>
               <div style={styles.recipeCardTop}>
-                <span style={styles.recipeName}>{recipeName(recipe, language)}</span>
+                <span style={{ ...styles.recipeName, flex: "1 1 110px", minWidth: 0, overflowWrap: "break-word" }}>{recipeName(recipe, language)}</span>
                 <button onClick={() => toggleFavorite(recipe.id)} aria-label={t("aUnsave")} aria-pressed="true" style={styles.favButton}>
                   <Heart size={16} color={COLORS.accent} fill={COLORS.accent} />
                 </button>
@@ -10046,7 +10048,7 @@ function NutritionGoalsScreen({ profile, onSaveProfile, onBack }) {
       <h1 style={{ ...styles.h1, marginTop: 8 }}>{n("navLabel")}</h1>
       <p style={styles.subtext}>{n("intro")}</p>
 
-      <div className="ms-nutri-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20, alignItems: "start", marginTop: 8 }}>
+      <div className="ms-nutri-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: 20, alignItems: "start", marginTop: 8 }}>
         <div>
           <div style={{ ...styles.sectionLabel, marginTop: 10 }}>{n("aboutYou")}</div>
           <div style={styles.rowPair}>
@@ -10391,11 +10393,14 @@ function RatingBadge({ recipeId, compact }) {
   );
 }
 
+// Recipes you write yourself may have no nutrition numbers; don't show "0 calories".
+const hasMacros = (r) => !!(r && r.macros && (Number(r.macros.calories) || Number(r.macros.protein) || Number(r.macros.carbs) || Number(r.macros.fat)));
+
 function StarPicker({ value, onChange, size = 20, label }) {
   return (
     <div style={{ display: "flex", alignItems: "center" }} role="radiogroup" aria-label={label}>
       {[1, 2, 3, 4, 5].map((n) => (
-        <button key={n} type="button" role="radio" aria-checked={n === value} aria-label={`${n}`} onClick={() => onChange(n === value ? 0 : n)} style={styles.starButton}>
+        <button key={n} type="button" role="radio" aria-checked={n === value} aria-label={`${n} / 5 ★`} onClick={() => onChange(n === value ? 0 : n)} style={styles.starButton}>
           <Star size={size} color={n <= value ? COLORS.accent : COLORS.line} fill={n <= value ? COLORS.accent : "none"} />
         </button>
       ))}
@@ -10700,7 +10705,7 @@ const styles = {
   basicChipOff: { background: COLORS.paper, color: COLORS.inkMuted },
   ingredientChip: { display: "flex", alignItems: "center", padding: "6px 6px 6px 12px", borderRadius: 20, background: COLORS.paper, border: `1px solid ${COLORS.line}`, fontSize: 13, color: COLORS.ink },
   ingredientMeta: { fontSize: 11, color: COLORS.inkMuted },
-  favButton: { background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", justifyContent: "center", minWidth: 44, minHeight: 44, margin: "-12px -8px", borderRadius: 12 },
+  favButton: { background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", justifyContent: "center", minWidth: 44, minHeight: 44, margin: "-12px -3px", borderRadius: 12 },
   chipX: { background: "none", border: "none", cursor: "pointer", marginInlineStart: 2, padding: 0, display: "flex", alignItems: "center", justifyContent: "center", minWidth: 40, minHeight: 40, margin: "-10px -8px -10px 0", borderRadius: 12 },
   inputRow: { display: "flex", gap: 8, marginBottom: 12 },
   textInput: { flex: 1, width: "100%", boxSizing: "border-box", padding: "11px 14px", borderRadius: 12, border: `1px solid ${COLORS.line}`, fontSize: 14, fontFamily: "'Inter', sans-serif", outline: "none", color: COLORS.ink, background: COLORS.paper },
@@ -10712,7 +10717,7 @@ const styles = {
   emptyText: { fontSize: 13, color: COLORS.inkMuted, fontStyle: "italic" },
   recipeImage: { width: 64, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },
   recipeCard: { background: COLORS.card, border: `1px solid ${COLORS.line}`, borderRadius: 14, padding: "14px 16px", marginBottom: 10, cursor: "pointer" },
-  recipeCardTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 },
+  recipeCardTop: { display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-start", gap: 8, rowGap: 4 },
   recipeName: { fontSize: 15, fontWeight: 600, color: COLORS.ink },
   recipeMetaRow: { marginTop: 5, display: "flex", alignItems: "center", flexWrap: "wrap", rowGap: 4, columnGap: 10 },
   recipeMeta: { fontSize: 12, color: COLORS.inkMuted, whiteSpace: "nowrap" },
