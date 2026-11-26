@@ -37,6 +37,7 @@ import { ACTIVITY as NUTRI_ACTIVITY, GOALS as NUTRI_GOALS, SEXES as NUTRI_SEXES,
 import { NUTRI_TR } from "./nutrition-tr.js";
 import { TourCard, TOUR_STEPS, TOUR_UI, tourEmit } from "./tour.jsx";
 import { InstallScreen, InstallHint, installText, isStandalone } from "./install.jsx";
+import { ThemeIcon } from "./theme-icon.jsx";
 import { RECIPE_IMAGES } from "./recipe-images.js";
 import { loadAppearance, saveAppearance, resolvedTheme, watchSystemTheme, injectAppearanceCss, applyAppearance } from "./appearance.js";
 import { pickRecipeIds } from "./photos.jsx";
@@ -7738,7 +7739,7 @@ export default function App() {
           <img src={LOGO_HEADER} alt="Auntie Ceci logo" width={52} height={52} style={styles.brandLogo} /><span style={styles.brand}>Auntie&nbsp;Ceci</span>
           <span style={{ flex: 1 }} />
           <button onClick={() => updateAppearance({ theme: isDark ? "light" : "dark" })} aria-label={t(isDark ? "themeLight" : "themeDark")} title={t(isDark ? "themeLight" : "themeDark")} style={styles.settingsButton}>
-            {isDark ? <Sun size={17} color={COLORS.inkMuted} /> : <Moon size={17} color={COLORS.inkMuted} />}
+            <ThemeIcon dark={isDark} size={19} color={COLORS.ink} />
           </button>
           {showGear && (
             <button onClick={openSettings} aria-label={t("settingsTitle")} title={t("settingsTitle")} style={styles.settingsButton}>

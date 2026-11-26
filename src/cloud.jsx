@@ -9,6 +9,7 @@
 // Without the library (the claude.ai version, tests) none of this runs and
 // the app behaves exactly as before.
 import React, { useState, useEffect, useRef } from "react";
+import { ThemeIcon } from "./theme-icon.jsx";
 import { loadAppearance, saveAppearance, resolvedTheme } from "./appearance.js";
 import { LOGO_HEADER, LOGO_LARGE, COPYRIGHT } from "./brand.js";
 import { pickRecipeIds } from "./photos.jsx";
@@ -224,7 +225,7 @@ export function AuthScreen({ sb, onGuest }) {
             <span style={{ fontFamily: "'Lobster', Georgia, serif", fontSize: 25, fontWeight: 400, color: C.sageText }}>Auntie Ceci</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <button onClick={toggleTheme} aria-label={dark ? "Light mode" : "Dark mode"} title={dark ? "Light mode" : "Dark mode"} style={{ width: 32, height: 32, borderRadius: 10, border: `1px solid ${C.line}`, background: C.paper, color: C.muted, cursor: "pointer", fontSize: 15, lineHeight: 1 }}>{dark ? "☀" : "☾"}</button>
+          <button onClick={toggleTheme} aria-label={dark ? "Light mode" : "Dark mode"} title={dark ? "Light mode" : "Dark mode"} style={{ width: 32, height: 32, borderRadius: 10, border: `1px solid ${C.line}`, background: C.paper, color: C.ink, cursor: "pointer", fontSize: 15, lineHeight: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}><ThemeIcon dark={dark} size={17} color={C.ink} /></button>
 
           </div>
         </div>
