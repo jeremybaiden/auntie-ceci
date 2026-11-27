@@ -100,6 +100,19 @@ html[data-ms-motion="reduce"] .ms-tour-target { animation: none; box-shadow: 0 0
   .ms-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), .ms-root select, .ms-root textarea { font-size: 16px !important; }
   :root[data-ms-text="small"] .ms-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), :root[data-ms-text="small"] .ms-root select, :root[data-ms-text="small"] .ms-root textarea { font-size: 17.8px !important; }
 }
+/* Bottom tab bar stays put: the page itself never scrolls, only the screen area between header and tab bar does */
+html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+#root { height: 100%; min-height: 0 !important; }
+.ms-root { height: 100vh; height: 100dvh; min-height: 0 !important; overflow: hidden; }
+.ms-header, .ms-tabbar { flex-shrink: 0; }
+.ms-screen { min-height: 0; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding-bottom: 12px; box-sizing: border-box; }
+.ms-tabbar { box-shadow: 0 -4px 14px var(--ms-shadow); z-index: 3 !important; }
+.ms-tabbar button { min-width: 0; }
+.ms-tabbar button > span { display: block; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
+@media (max-width: 640px), (max-height: 600px), (pointer: coarse) and (max-width: 1100px) {
+  .ms-root.ms-desktop > .ms-frame { position: fixed !important; inset: 0; width: auto !important; max-width: none !important; height: auto !important; }
+}
+@media (max-width: 640px) { .ms-desktop .ms-header { padding-top: max(14px, env(safe-area-inset-top)) !important; } }
 /* Messages that pop up stay on screen, even long translated ones */
 .ms-toast { max-width: calc(100% - 32px); white-space: normal !important; text-align: center; box-sizing: border-box; z-index: 4; }
 @media (max-width: 820px) { .ms-desktop .ms-nav { order: 3; width: 100%; overflow-x: auto; margin-inline-end: 0 !important; } }
